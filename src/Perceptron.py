@@ -28,6 +28,13 @@ class Perceptron:
             print("Updated weight")
             print("Current weights: " + str(self.weight))
 
+    def calculate_loss(self, data):
+        loss = 0
+        for datum in data:
+            loss += abs(datum[1] - self.eval(datum[0]))
+        loss = loss / len(data)
+        return loss
+
     def __init__(self, weight: ArrayLike, learning_rate):
         self.weight = weight
         self.learning_rate = learning_rate
@@ -43,5 +50,7 @@ if __name__ == '__main__':
     print("===================")
     train_perceptron = Perceptron(np.array([0.001, 0.001]), 0.1)
     print("Weights before training: " + str(train_perceptron.weight))
+    print("Loss before training: " + str(train_perceptron.calculate_loss(testData)))
     train_perceptron.train(testData)
     print("Weights after training: " + str(train_perceptron.weight))
+    print("Loss after training: " + str(train_perceptron.calculate_loss(testData)))
