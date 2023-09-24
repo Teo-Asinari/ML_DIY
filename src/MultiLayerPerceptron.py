@@ -1,17 +1,11 @@
 import argparse
 import numpy as np
-from enum import Enum
 
 from Utils.DebugUtils import printd
+from Utils.ActivationFunction import activationFunc, ActivationFunction
 
-from typing import List, Tuple, Callable
+from typing import List, Tuple
 
-class ActivationFunction(Enum):
-    RELU = lambda x: np.maximum(0, x)
-    TANH = lambda x: np.tanh(x)
-    LOGISTIC = lambda x: 1 / (1 + np.exp(-x))
-
-activationFunc = Callable[[np.ndarray], np.ndarray]
 layerSchema = Tuple[activationFunc, int]
 
 DEBUG = False
