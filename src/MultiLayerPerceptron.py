@@ -11,10 +11,8 @@ class ActivationFunction(Enum):
 
 
 class MLP:
-    input_size = 4
-    input_layer_schema = (ActivationFunction.LOGISTIC, 5)
-    hidden_layer_schemas = [()]
-    output_layer_schema = (ActivationFunction.RELU, 5)
+    input_size = 5
+    layer_schemas = []
     layers = []
 
     def __init__(self, input_size: int, layer_schemas: List[Tuple[int, str]]):
