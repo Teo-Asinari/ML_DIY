@@ -65,7 +65,7 @@ if __name__ == '__main__':
                      ]
 
     layerSchemas = [(ActivationFunction.RELU, 2), (ActivationFunction.RELU, 2),
-                    (ActivationFunction.SIGMOID, 1), (ActivationFunction.CEIL, 1)]
+                    (ActivationFunction.SIGMOID, 1), (ActivationFunction.ROUND, 1)]
     basicMLP = MLP(2, layerSchemas)
     for datum in training_data:
         basicMLP.forwardPass(datum[0])
