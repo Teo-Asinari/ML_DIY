@@ -1,4 +1,5 @@
 \documentclass{article}
+\usepackage{amssymb}
 \usepackage{tikz}
 \usetikzlibrary{positioning}
 
@@ -43,31 +44,44 @@
 ]
 
 % Inputs
-\node[input] (input1) {$x_1$};
-\node[input, below=of input1] (input2) {$x_2$};
+    \node[input] (input1) at (1,1) {$x_1$};
+    \node[input] (input2) at (1,0) {$x_2$};
 
 % Input layer 1 (L_1)
-\node[inputLayer, right=of input1] (inputLayer1) {$L_{11}$};
-\node[inputLayer, below=of inputLayer1] (inputLayer2) {$L_{12}$};
-\node[inputLayer, above left=of inputLayer1] (inputWeight1) {$w_{111}$};
-\node[inputLayer, left=of inputWeight1] (inputWeight2) {$w_{112}$};
+    \node[inputLayer] (inputLayer1) at (2.5,1) {$L_{11}$};
+    \node[inputLayer] (inputLayer2) at (2.5, 0) {$L_{12}$};
+    \node[inputLayer] (weight111) at (1.7, 2) {$w_{111}$};
+    \node[inputLayer] (weight112) at (2.8, 2) {$w_{112}$};
+    \node[inputLayer] (weight121) at (1.7, -1) {$w_{121}$};
+    \node[inputLayer] (weight122) at (2.8, -1) {$w_{122}$};
 
 % Input Layer Activation
-\node[activation, right=of inputLayer1] (activation1) {$a_{1}$ (ReLU)};
+    \node[activation] (activation11) at (4.75, 1) {$a_{11}$ (ReLU)};
+    \node[activation] (activation12) at (4.75, -1) {$a_{12}$ (ReLU)};
 
 % Hidden layer 2 (L_2)
-\node[hidden, right=of activation1] (hidden1) {$L_{21}$};
-\node[hidden, below=of hidden1] (hidden2) {$L_{22}$};
+    \node[hidden] (hidden1) at (6.5, 1) {$L_{21}$};
+    \node[hidden] (hidden2) at (6.5, -1) {$L_{22}$};
+    \node[hidden] (weight211) at (6, 2) {$w_{211}$};
+    \node[hidden] (weight212) at (7, 2) {$w_{212}$};
+    \node[hidden] (weight221) at (6, -2) {$w_{221}$};
+    \node[hidden] (weight222) at (7, -2) {$w_{222}$};
+
+%
 
 % Hidden Layer Activation
-\node[activation, right=of hidden1] (activation21) {$a_{21}$ (ReLU)};
-\node[activation, below=of activation21] (activation22) {$a_{22}$ (ReLU)};
-
+    \node[activation] (activation21) at (8.5, 1) {$a_{21}$ (ReLU)};
+    \node[activation] (activation22) at (8.5, -1) {$a_{22}$ (ReLU)};
 % Output layer (L_3)
-\node[output, right=of activation21] (output1) {$L_{3}$};
+    \node[output] (output1) at (10.8, 0.5) {$L_{3}$};
+    \node[output] (weight311) at (10, 1.5) {$w_{311}$};
+    \node[output] (weight312) at (11.6, 1.5) {$w_{312}$};
 
 % Output Layer activation
-\node[activation, right=of output1] (activation3) {$a_{3}$ (Sigmoid)};
+    \node[activation] (activation3) at (13, 0.5) {$a_{3}$ (Sigmoid)};
+
+% Loss
+    \node[output] (loss) at (15.25, 0.5) {loss $\mathcal{L}$};
 
 % Arrows
 \draw[->] (input1) -- (inputLayer1);
@@ -75,11 +89,22 @@
 \draw[->] (input2) -- (inputLayer1);
 \draw[->] (input2) -- (inputLayer2);
 
-\draw[->] (inputLayer1) -- (activation1);
-\draw[->] (inputLayer2) -- (activation1);
 
-\draw[->] (activation1) -- (hidden1);
-\draw[->] (activation1) -- (hidden2);
+\draw[->] (weight111) -- (inputLayer1);
+\draw[->] (weight112) -- (inputLayer1);
+\draw[->] (weight121) -- (inputLayer2);
+\draw[->] (weight122) -- (inputLayer2);
+
+\draw[->] (inputLayer1) -- (activation11);
+\draw[->] (inputLayer2) -- (activation12);
+
+\draw[->] (activation11) -- (hidden1);
+\draw[->] (activation12) -- (hidden2);
+
+\draw[->] (weight211) -- (hidden1);
+\draw[->] (weight212) -- (hidden1);
+\draw[->] (weight221) -- (hidden2);
+\draw[->] (weight222) -- (hidden2);
 
 
 \draw[->] (hidden1) -- (activation21);
@@ -89,6 +114,13 @@
 \draw[->] (activation22) -- (output1);
 
 \draw[->] (output1) -- (activation3);
+
+
+\draw[->] (weight311) -- (output1);
+\draw[->] (weight312) -- (output1);
+
+
+\draw[->] (activation3) -- (loss);
 
 \end{tikzpicture}
 
