@@ -1,9 +1,49 @@
 \documentclass{article}
+\usepackage{bm}
 \usepackage{amssymb}
 \usepackage{tikz}
 \usetikzlibrary{positioning}
 
+\title{Basic MLP with manually-derived Backprop}
+\author{Teo Asinari}
+\date{\today}
+
 \begin{document}
+\maketitle
+
+\section{Introduction}
+\paragraph{Goal:} To design, train and use a simple 3-layer MLP for binary classification
+of size-2 vectors.
+\paragraph{Design:} of the form \[[(layer\_size, Activation)...]\]: [(2, ReLU), (2, ReLU), (1, Sigmoid)]
+\subsection{Diagrams}
+\subsubsection{Vectorized Diagram}
+\begin{tikzpicture}[]
+    \node (input) at (1,1) {$\bm{x}$};
+    \node (weight1) at (1.5,1.75) {$\bm{w_1}$};
+    \node (inputLayer) at (2,1) {$\bm{L_1}$};
+    \node (activation1) at (3,1) {$\bm{a_1}$};
+    \node (hiddenLayer) at (4,1) {$\bm{L_2}$};
+    \node (weight2) at (3.5,1.75) {$\bm{w_2}$};
+    \node (activation2) at (5,1) {$\bm{a_2}$};
+    \node (outputLayer) at (6,1) {$\bm{L_3}$};
+    \node (weight3) at (5.5,1.75) {$\bm{w_3}$};
+    \node (activation3) at (7,1) {$\bm{a_3}$};
+    \node (loss) at (8,1) {$\mathcal{L}$};
+
+
+\draw[->] (input) -- (inputLayer);
+\draw[->] (weight1) -- (inputLayer);
+\draw[->] (inputLayer) -- (activation1);
+\draw[->] (activation1) -- (hiddenLayer);
+\draw[->] (weight2) -- (hiddenLayer);
+\draw[->] (hiddenLayer) -- (activation2);
+\draw[->] (activation2) -- (outputLayer);
+\draw[->] (weight3) -- (outputLayer);
+\draw[->] (outputLayer) -- (activation3);
+\draw[->] (activation3) -- (loss);
+
+\end{tikzpicture}
+\subsubsection{Expanded Diagram}
 \begin{tikzpicture}[%
     activation/.style={%
         draw,
@@ -13,6 +53,13 @@
         node distance=0.5cm
     },
     input/.style={%
+        draw,
+        circle,
+        inner sep=2pt,
+        minimum size=0.5cm,
+        node distance=0.5cm
+    },
+    weight/.style={%
         draw,
         circle,
         inner sep=2pt,
@@ -50,10 +97,10 @@
 % Input layer 1 (L_1)
     \node[inputLayer] (inputLayer1) at (2.5,1) {$L_{11}$};
     \node[inputLayer] (inputLayer2) at (2.5, 0) {$L_{12}$};
-    \node[inputLayer] (weight111) at (1.7, 2) {$w_{111}$};
-    \node[inputLayer] (weight112) at (2.8, 2) {$w_{112}$};
-    \node[inputLayer] (weight121) at (1.7, -1) {$w_{121}$};
-    \node[inputLayer] (weight122) at (2.8, -1) {$w_{122}$};
+    \node[weight] (weight111) at (1.7, 2) {$w_{111}$};
+    \node[weight] (weight112) at (2.8, 2) {$w_{112}$};
+    \node[weight] (weight121) at (1.7, -1) {$w_{121}$};
+    \node[weight] (weight122) at (2.8, -1) {$w_{122}$};
 
 % Input Layer Activation
     \node[activation] (activation11) at (4.75, 1) {$a_{11}$ (ReLU)};
@@ -62,10 +109,10 @@
 % Hidden layer 2 (L_2)
     \node[hidden] (hidden1) at (6.5, 1) {$L_{21}$};
     \node[hidden] (hidden2) at (6.5, -1) {$L_{22}$};
-    \node[hidden] (weight211) at (6, 2) {$w_{211}$};
-    \node[hidden] (weight212) at (7, 2) {$w_{212}$};
-    \node[hidden] (weight221) at (6, -2) {$w_{221}$};
-    \node[hidden] (weight222) at (7, -2) {$w_{222}$};
+    \node[weight] (weight211) at (6, 2) {$w_{211}$};
+    \node[weight] (weight212) at (7, 2) {$w_{212}$};
+    \node[weight] (weight221) at (6, -2) {$w_{221}$};
+    \node[weight] (weight222) at (7, -2) {$w_{222}$};
 
 %
 
@@ -74,8 +121,8 @@
     \node[activation] (activation22) at (8.5, -1) {$a_{22}$ (ReLU)};
 % Output layer (L_3)
     \node[output] (output1) at (10.8, 0.5) {$L_{3}$};
-    \node[output] (weight311) at (10, 1.5) {$w_{311}$};
-    \node[output] (weight312) at (11.6, 1.5) {$w_{312}$};
+    \node[weight] (weight311) at (10, 1.5) {$w_{311}$};
+    \node[weight] (weight312) at (11.6, 1.5) {$w_{312}$};
 
 % Output Layer activation
     \node[activation] (activation3) at (13, 0.5) {$a_{3}$ (Sigmoid)};
@@ -123,5 +170,16 @@
 \draw[->] (activation3) -- (loss);
 
 \end{tikzpicture}
+
+\subsection{Definitions}
+\subsubsection{Remark on weight notation}
+$w_{i,j,k}$ is to say the weight at the $i$-th layer, $j$-th neuron, $k$-th weight.
+Hence $w_{111}$ is the first weight of the first neuron in the first layer, etc.
+\subsubsection{Remark on layer notation}
+This is a sub-case of the weight notation. I.e., $L_{ij}$ is the $j$-th neuron at the $i$-th layer, etc.
+\subsubsection{Neuron firing calculation} This is just a straightforward dot-product. We have:
+\[L_{i}=\bm{w}_{i}\bm{x}_i \]
+\subsubsection{}
+\subsection{BackPropagation Derivation}
 
 \end{document}
