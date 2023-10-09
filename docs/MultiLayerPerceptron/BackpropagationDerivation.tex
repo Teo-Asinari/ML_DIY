@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage{bm}
 \usepackage{amssymb}
+\usepackage{amsmath}
 \usepackage{tikz}
 \usetikzlibrary{positioning}
 
@@ -94,19 +95,19 @@ of size-2 vectors.
 
 % Inputs
     \node[input] (input1) at (1,1) {$x_1$};
-    \node[input] (input2) at (1,0) {$x_2$};
+    \node[input] (input2) at (1,-1) {$x_2$};
 
 % Input layer 1 (L_1)
     \node[inputLayer] (inputLayer1) at (2.5,1) {$\bm{L}_{11}$};
-    \node[inputLayer] (inputLayer2) at (2.5, 0) {$\bm{L}_{12}$};
+    \node[inputLayer] (inputLayer2) at (2.5, -1) {$\bm{L}_{12}$};
     \node[weight] (weight111) at (1.7, 2) {$w_{111}$};
     \node[weight] (weight112) at (2.8, 2) {$w_{112}$};
-    \node[weight] (weight121) at (1.7, -1) {$w_{121}$};
-    \node[weight] (weight122) at (2.8, -1) {$w_{122}$};
+    \node[weight] (weight121) at (1.7, -2) {$w_{121}$};
+    \node[weight] (weight122) at (2.8, -2) {$w_{122}$};
 
 % Input Layer Activation
-    \node[activation] (activation11) at (4.75, 1) {$a_{11}$ (ReLU)};
-    \node[activation] (activation12) at (4.75, -1) {$a_{12}$ (ReLU)};
+    \node[activation] (activation11) at (4.5, 1) {$a_{11}$ (ReLU)};
+    \node[activation] (activation12) at (4.5, -1) {$a_{12}$ (ReLU)};
 
 % Hidden layer 2 (L_2)
     \node[hidden] (hidden1) at (6.5, 1) {$\bm{L}_{21}$};
@@ -122,15 +123,15 @@ of size-2 vectors.
     \node[activation] (activation21) at (8.5, 1) {$a_{21}$ (ReLU)};
     \node[activation] (activation22) at (8.5, -1) {$a_{22}$ (ReLU)};
 % Output layer (L_3)
-    \node[output] (output1) at (10.8, 0.5) {$\bm{L}_{3}$};
-    \node[weight] (weight311) at (10, 1.5) {$w_{311}$};
-    \node[weight] (weight312) at (11.6, 1.5) {$w_{312}$};
+    \node[output] (output1) at (10.8, 0) {$\bm{L}_{3}$};
+    \node[weight] (weight311) at (10, 1.25) {$w_{311}$};
+    \node[weight] (weight312) at (11.6, 1.25) {$w_{312}$};
 
 % Output Layer activation
-    \node[activation] (activation3) at (13, 0.5) {$a_{3}$ (Sigmoid)};
+    \node[activation] (activation3) at (13, 0) {$a_{3}$ (Sigmoid)};
 
 % Loss
-    \node[output] (loss) at (15.25, 0.5) {loss $\mathcal{L}$};
+    \node[output] (loss) at (15.25, 0) {loss $\mathcal{L}$};
 
 % Arrows
 \draw[->] (input1) -- (inputLayer1);
@@ -184,14 +185,43 @@ This is a sub-case of the weight notation. I.e., $\bm{L}_{ij}$ is the $j$-th neu
 \subsubsection{Neuron firing calculation} This is just a straightforward dot-product. We have:
 \[\bm{L}_{ij}=\bm{w}_{ij}\bm{x}_i \]
 Where $\bm{x}_i$ in this case is referring to a more general notion of 'layer input', not necessarily just the first input to the network as in the diagrams above.
-\subsubsection{}
 \subsection{BackPropagation Derivation}
 \paragraph{Notation for derivative of loss w.r.t. to a function} I will be using the following: $\overline{f} = \frac{\partial{\mathcal{L}}}{\partial{f}}$. This notation was introduced by Roger Grosse from the University of Toronto.
 \paragraph{Pa(x) and Ch(x)} these refer to the sets of parent and child vertices of a vertex in a graph.
 \paragraph{General Approach} Let's label the computational graph nodes as $v_1,...,v_N$ with some topological ordering. 
 Then, our general goal for backprop is to compute $\overline{v_i}$ for $i \in {1,...N}$. With these, we can trivially calculate the weight updates.
 We compute a forward pass of the network, then set $v_N=1$, then, for $i=N-1, ... , 1$, we have:
-\[\overline{v_i} = \sum_{j \in Ch(v_i)} \overline{v_j} \frac{\partial{v_j}}{\partial{v_i}} \]
+\begin{equation}
+    \overline{v_i} = \sum_{j \in Ch(v_i)} \overline{v_j} \frac{\partial{v_j}}{\partial{v_i}} \quad  \text{(The Backprop Rule)}
+\end{equation}
+\subsubsection{Applying the backprop rule}
+\paragraph{Loss and final activation}
+Then, going backwards through the 'computational graph', starting at the end:
+\begin{equation}\overline{\mathcal{L}} = 1\end{equation}
+\[\overline{\bm{a_3}} = \overline{\mathcal{L}} \frac{\partial{\mathcal{L}}}{\partial{\bm{a_3}}}\]
+\[\overline{\bm{a_3}} = (1) \frac{\partial{\mathcal{L}}}{\partial{\bm{a_3}}}\]
+\[\overline{\bm{a_3}} = \frac{\partial{\mathcal{L}}}{\partial{\bm{a_3}}}\]
+\[\overline{\bm{a_3}} = \frac{\partial}{\partial{\bm{a_3}}} \frac{1}{2}(\bm{a_3} - \bm{t})^{2}\]
+\[\overline{\bm{a_3}} = (\bm{a_3} - \bm{t}) \frac{\partial}{\partial{\bm{a_3}}} (\bm{a_3} - \bm{t})\]
+\[\overline{\bm{a_3}} = (\bm{a_3} - \bm{t}) (1)\]
+\begin{equation}
+\overline{\bm{a_3}} = (\bm{a_3} - \bm{t})
+\end{equation}
+\paragraph{Final layer}
+\[\overline{\bm{L}_3} = \overline{\bm{a_3}} \frac{\partial{\bm{a_3}}}{\partial{\bm{L}_3}}\]
+\[\overline{\bm{L}_3} = \overline{\bm{a_3}} \frac{\partial}{\partial{\bm{L}_3}} \frac{1}{1 + \exp(-\bm{L}_3)}\]
+\[\overline{} = \]
+\[\overline{} = \]
+\[\overline{} = \]
+\[\overline{} = \]
+\paragraph{Final layer weights}
+\paragraph{Second layer activation}
+\paragraph{Second layer}
+\paragraph{Second layer weights}
+\paragraph{Input layer activation}
+\paragraph{Input layer}
+\paragraph{Input layer weights}
+
 \subsection{Misc. Remarks}
 \subsubsection{Rounding: Training vs Inference} Since we aim to train a binary classifier, the round() would be necessary for the correct output range. However since round() is not differentiable, we omit it during training, calculating fractional losses instead. We only include round() during inference.
 
