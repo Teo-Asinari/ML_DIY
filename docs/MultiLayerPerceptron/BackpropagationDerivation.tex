@@ -208,13 +208,18 @@ Then, going backwards through the 'computational graph', starting at the end:
 \overline{\bm{a_3}} = (\bm{a_3} - \bm{t})
 \end{equation}
 \paragraph{Final layer}
+$\bm{N.B.}$ I use $\sigma$ to denote the sigmoid function here, not an activation function.
 \[\overline{\bm{L}_3} = \overline{\bm{a_3}} \frac{\partial{\bm{a_3}}}{\partial{\bm{L}_3}}\]
-\[\overline{\bm{L}_3} = \overline{\bm{a_3}} \frac{\partial}{\partial{\bm{L}_3}} \frac{1}{1 + \exp(-\bm{L}_3)}\]
-\[\overline{} = \]
-\[\overline{} = \]
-\[\overline{} = \]
-\[\overline{} = \]
+\[\overline{\bm{L}_3} = \overline{\bm{a_3}} \frac{\partial}{\partial{\bm{L}_3}} \sigma(\bm{L}_3)\]
+\begin{equation}
+    \overline{\bm{L}_3} = \overline{\bm{a_3}} \hspace{0.125cm} \sigma(\bm{L}_3) (1 - \sigma(\bm{L}_3))
+\end{equation}
 \paragraph{Final layer weights}
+\[\overline{w_{3i}} = \overline{\bm{L}_3} \frac{\partial}{\partial{w_{3i}}} \bm{L}_3\]
+\[\overline{w_{3i}} = \overline{\bm{L}_3} \frac{\partial}{\partial{w_{3i}}} \sum_{j} w_{3j} a_{2j}\]
+\begin{equation}
+    \overline{w_{3i}} = \overline{\bm{L}_3} a_{2i}
+\end{equation}
 \paragraph{Second layer activation}
 \paragraph{Second layer}
 \paragraph{Second layer weights}
