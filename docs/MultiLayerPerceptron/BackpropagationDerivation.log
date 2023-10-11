@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.4)  10 OCT 2023 08:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.4)  11 OCT 2023 10:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -522,7 +522,7 @@ Here is how much of TeX's memory you used:
  33526 multiletter control sequences out of 15000+600000
  525061 words of font info for 79 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
- 102i,6n,104p,434b,627s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 102i,9n,104p,434b,627s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023basic/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2023basi
 c/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2023
@@ -539,7 +539,7 @@ pfb></usr/local/texlive/2023basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
 cmr7.pfb></usr/local/texlive/2023basic/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmsy10.pfb></usr/local/texlive/2023basic/texmf-dist/fonts/type1/public/amsfon
 ts/cm/cmsy7.pfb>
-Output written on BackpropagationDerivation.pdf (4 pages, 168772 bytes).
+Output written on BackpropagationDerivation.pdf (4 pages, 171464 bytes).
 PDF statistics:
  90 PDF objects out of 1000 (max. 8388607)
  55 compressed objects within 1 object stream
