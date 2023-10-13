@@ -242,14 +242,30 @@ Note that $d/dx($ReLU$(x))$ is the heaviside step function $\theta (x)$:
     \overline{\bm{L}_2} = \overline{\bm{a}_2} \hspace{0.25cm} \theta(\bm{L}_2) 
 \end{equation} 
 \paragraph{Second layer weights}
-\[\overline{w_{2i} = \overline{\bm{L}_2} \frac{\partial}{\partial{w_{2i}}} \bm{L}_2 \]
-\[\overline{w_{2i} = \overline{\bm{L}_2} \frac{\partial}{\partial{w_{2i}}} \sum_{j} w_{2j}a_{1j} \]
+\[\overline{w_{2i}} = \overline{\bm{L}_2} \frac{\partial}{\partial{w_{2i}}} \bm{L}_2 \]
+\[\overline{w_{2i}} = \overline{\bm{L}_2} \frac{\partial}{\partial{w_{2i}}} \sum_{j} w_{2j}a_{1j} \]
 \begin{equation}
-    \overline{w_{2i} = \overline{\bm{L}_2} a_{1i}
+    \overline{w_{2i}} = \overline{\bm{L}_2} a_{1i}
 \end{equation}
 \paragraph{Input layer activation}
+\[\overline{\bm{a}_{1i}} = \overline{\bm{L}_2} \frac{\partial}{\partial{\bm{a}_{1i}}} \bm{L}_2\]
+\[\overline{\bm{a}_{1i}} = \overline{\bm{L}_2} \frac{\partial}{\partial{\bm{a}_{1i}}} \sum_{j} w_{2j}a_{1j}\]
+\begin{equation}
+    \overline{\bm{a}_{1i}} = \overline{\bm{L}_2} w_{2i}
+\end{equation}
 \paragraph{Input layer}
+\[\overline{\bm{L}_1} = \overline{\bm{a}_1} \frac{\partial}{\partial{\bm{L}_1}} \bm{a}_1\]
+\[\overline{\bm{L}_1} = \overline{\bm{a}_1} \frac{\partial}{\partial{\bm{L}_1}} \text{ReLU}(\bm{L}_1)\]
+\[\overline{\bm{L}_1} = \overline{\bm{a}_1} \hspace{0.125cm} \theta(\bm{L}_1) \cdot (1)\]
+\begin{equation}
+    \overline{\bm{L}_1} = \overline{\bm{a}_1} \hspace{0.125cm} \theta(\bm{L}_1)
+\end{equation}
 \paragraph{Input layer weights}
+\[\overline{\bm{w}_{1i}} = \overline{\bm{L}_1} \frac{\partial}{\partial{\bm{w}_{1i}}} \bm{L}_1\]
+\[\overline{\bm{w}_{1i}} = \overline{\bm{L}_1} \frac{\partial}{\partial{\bm{w}_{1i}}} \sum_{j} \bm{w}_{1j}\bm{x}_{1j}\]
+\begin{equation}
+    \overline{\bm{w}_{1i}} = \overline{\bm{L}_1} \bm{x}_{1i}
+\end{equation}
 
 \subsection{Misc. Remarks}
 \subsubsection{Rounding: Training vs Inference} Since we aim to train a binary classifier, the round() would be necessary for the correct output range. However since round() is not differentiable, we omit it during training, calculating fractional losses instead. We only include round() during inference.
