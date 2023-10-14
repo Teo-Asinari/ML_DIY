@@ -98,8 +98,8 @@ of size-2 vectors.
     \node[input] (input2) at (1,-1) {$x_2$};
 
 % Input layer 1 (L_1)
-    \node[inputLayer] (inputLayer1) at (2.5,1) {$\bm{L}_{11}$};
-    \node[inputLayer] (inputLayer2) at (2.5, -1) {$\bm{L}_{12}$};
+    \node[inputLayer] (inputLayer1) at (2.5,1) {$L_{11}$};
+    \node[inputLayer] (inputLayer2) at (2.5, -1) {$L_{12}$};
     \node[weight] (weight111) at (1.7, 2) {$w_{111}$};
     \node[weight] (weight112) at (2.8, 2) {$w_{112}$};
     \node[weight] (weight121) at (1.7, -2) {$w_{121}$};
@@ -110,8 +110,8 @@ of size-2 vectors.
     \node[activation] (activation12) at (4.5, -1) {$a_{12}$ (ReLU)};
 
 % Hidden layer 2 (L_2)
-    \node[hidden] (hidden1) at (6.5, 1) {$\bm{L}_{21}$};
-    \node[hidden] (hidden2) at (6.5, -1) {$\bm{L}_{22}$};
+    \node[hidden] (hidden1) at (6.5, 1) {$L_{21}$};
+    \node[hidden] (hidden2) at (6.5, -1) {$L_{22}$};
     \node[weight] (weight211) at (6, 2) {$w_{211}$};
     \node[weight] (weight212) at (7, 2) {$w_{212}$};
     \node[weight] (weight221) at (6, -2) {$w_{221}$};
@@ -123,7 +123,7 @@ of size-2 vectors.
     \node[activation] (activation21) at (8.5, 1) {$a_{21}$ (ReLU)};
     \node[activation] (activation22) at (8.5, -1) {$a_{22}$ (ReLU)};
 % Output layer (L_3)
-    \node[output] (output1) at (10.8, 0) {$\bm{L}_{3}$};
+    \node[output] (output1) at (10.8, 0) {$L_{3}$};
     \node[weight] (weight311) at (10, 1.25) {$w_{311}$};
     \node[weight] (weight312) at (11.6, 1.25) {$w_{312}$};
 
@@ -181,9 +181,9 @@ of size-2 vectors.
 $w_{i,j,k}$ is to say the weight at the $i$-th layer, $j$-th neuron, $k$-th weight.
 Hence $w_{111}$ is the first weight of the first neuron in the first layer, etc.
 \subsubsection{Remark on layer notation}
-This is a sub-case of the weight notation. I.e., $\bm{L}_{ij}$ is the $j$-th neuron at the $i$-th layer, etc.
+This is a sub-case of the weight notation. I.e., $L_{ij}$ is the scalar value of the $j$-th neuron at the $i$-th layer, etc.
 \subsubsection{Neuron firing calculation} This is just a straightforward dot-product. We have:
-\[\bm{L}_{ij}=\bm{w}_{ij}\bm{x}_i \]
+\[L_{ij}=\bm{w}_{ij}\bm{x}_i \]
 Where $\bm{x}_i$ in this case is referring to a more general notion of 'layer input', not necessarily just the first input to the network as in the diagrams above.
 \subsection{BackPropagation Derivation}
 \paragraph{Notation for derivative of loss w.r.t. to a function} I will be using the following: $\overline{f} = \frac{\partial{\mathcal{L}}}{\partial{f}}$. This notation was introduced by Roger Grosse from the University of Toronto.
@@ -192,43 +192,43 @@ Where $\bm{x}_i$ in this case is referring to a more general notion of 'layer in
 Then, our general goal for backprop is to compute $\overline{v_i}$ for $i \in {1,...N}$. With these, we can trivially calculate the weight updates.
 We compute a forward pass of the network, then set $v_N=1$, then, for $i=N-1, ... , 1$, we have:
 \begin{equation}
-    \overline{v_i} = \sum_{j \in Ch(v_i)} \overline{v_j} \frac{\partial{v_j}}{\partial{v_i}} \quad  \text{(The Backprop Rule)}
+    \overline{v_i} = \sum_{j \in \text{Ch}(v_i)} \overline{v_j} \frac{\partial{v_j}}{\partial{v_i}} \quad  \text{(The Backprop Rule)}
 \end{equation}
 \subsubsection{Applying the backprop rule}
 \paragraph{Loss and final activation}
 Then, going backwards through the 'computational graph', starting at the end:
 \begin{equation}\overline{\mathcal{L}} = 1\end{equation}
-\[\overline{\bm{a_3}} = \overline{\mathcal{L}} \frac{\partial{\mathcal{L}}}{\partial{\bm{a_3}}}\]
-\[\overline{\bm{a_3}} = (1) \frac{\partial{\mathcal{L}}}{\partial{\bm{a_3}}}\]
-\[\overline{\bm{a_3}} = \frac{\partial{\mathcal{L}}}{\partial{\bm{a_3}}}\]
-\[\overline{\bm{a_3}} = \frac{\partial}{\partial{\bm{a_3}}} \frac{1}{2}(\bm{a_3} - \bm{t})^{2}\]
-\[\overline{\bm{a_3}} = (\bm{a_3} - \bm{t}) \frac{\partial}{\partial{\bm{a_3}}} (\bm{a_3} - \bm{t})\]
-\[\overline{\bm{a_3}} = (\bm{a_3} - \bm{t}) (1)\]
+\[\overline{a_3} = \overline{\mathcal{L}} \frac{\partial{\mathcal{L}}}{\partial{a_3}}\]
+\[\overline{a_3} = (1) \frac{\partial{\mathcal{L}}}{\partial{a_3}}\]
+\[\overline{a_3} = \frac{\partial{\mathcal{L}}}{\partial{a_3}}\]
+\[\overline{a_3} = \frac{\partial}{\partial{a_3}} \frac{1}{2}(a_3 - t)^{2}\]
+\[\overline{a_3} = (a_3 - t) \frac{\partial}{\partial{a_3}} (a_3 - t)\]
+\[\overline{a_3} = (a_3 - t) (1)\]
 \begin{equation}
-\overline{\bm{a_3}} = (\bm{a_3} - \bm{t})
+\overline{a_3} = (a_3 - t)
 \end{equation}
 \paragraph{Final layer}
 $\bm{N.B.}$ I use $\sigma$ to denote the sigmoid function here, not an activation function.
-\[\overline{\bm{L}_3} = \overline{\bm{a_3}} \frac{\partial{\bm{a_3}}}{\partial{\bm{L}_3}}\]
-\[\overline{\bm{L}_3} = \overline{\bm{a_3}} \frac{\partial}{\partial{\bm{L}_3}} \sigma(\bm{L}_3)\]
+\[\overline{L_3} = \overline{a_3} \frac{\partial{a_3}}{\partial{L_3}}\]
+\[\overline{L_3} = \overline{a_3} \frac{\partial}{\partial{L_3}} \sigma(L_3)\]
 \begin{equation}
-    \overline{\bm{L}_3} = \overline{\bm{a_3}} \hspace{0.125cm} \sigma(\bm{L}_3) (1 - \sigma(\bm{L}_3))
+    \overline{L_3} = \overline{a_3} \hspace{0.125cm} \sigma(L_3) (1 - \sigma(L_3))
 \end{equation}
 \paragraph{Final layer weights}
-\[\overline{w_{3i}} = \overline{\bm{L}_3} \frac{\partial}{\partial{w_{3i}}} \bm{L}_3\]
-\[\overline{w_{3i}} = \overline{\bm{L}_3} \frac{\partial}{\partial{w_{3i}}} \sum_{j} w_{3j} a_{2j}\]
+\[\overline{w_{31i}} = \overline{L_3} \frac{\partial}{\partial{w_{31i}}} L_3\]
+\[\overline{w_{31i}} = \overline{L_3} \frac{\partial}{\partial{w_{31i}}} \sum_{j} w_{31j} a_{2j}\]
 \begin{equation}
-    \overline{w_{3i}} = \overline{\bm{L}_3} a_{2i}
+    \overline{w_{31i}} = \overline{L_3} a_{2i}
 \end{equation}
 \paragraph{Second layer activation}
-\[\overline{\bm{a}_{2i}} = \overline{\bm{L}_3} \frac{\partial}{\partial{\bm{a}_{2i}}} \bm{L}_3\]
-\[\overline{\bm{a}_{2i}} = \overline{\bm{L}_3} \frac{\partial}{\partial{\bm{a}_{2i}}} \sum_{j} w_{3j}a_{2j}\]
+\[\overline{a_{2i}} = \overline{L_3} \frac{\partial}{\partial{a_{2i}}} L_3\]
+\[\overline{a_{2i}} = \overline{L_3} \frac{\partial}{\partial{a_{2i}}} \sum_{j} w_{31j}a_{2j}\]
 \begin{equation}
-    \overline{\bm{a}_{2i}} = \overline{\bm{L}_3} w_{3i}
+    \overline{a_{2i}} = \overline{L_3} w_{31i}
 \end{equation}
 \paragraph{Second layer}
-\[\overline{\bm{L}_2} = \overline{\bm{a}_2} \frac{\partial}{\partial{\bm{L}_2}} \bm{a}_2 \]
-\[\overline{\bm{L}_2} = \overline{\bm{a}_2} \frac{\partial}{\partial{\bm{L}_2}}\text{ReLU}(\bm{L}_2) \]
+\[\overline{L_{2i}} = \overline{a_{2i}} \frac{\partial}{\partial{L_{2i}}} a_{2i} \]
+\[\overline{L_{2i}} = \overline{a_{2i}} \frac{\partial}{\partial{L_{2i}}}\text{ReLU}(L_{2i}) \]
 Note that $d/dx($ReLU$(x))$ is the heaviside step function $\theta (x)$: 
 \[
 \begin{cases}
@@ -237,19 +237,19 @@ Note that $d/dx($ReLU$(x))$ is the heaviside step function $\theta (x)$:
 \end{cases}
 \]
 
-\[\overline{\bm{L}_2} = \overline{\bm{a}_2} \hspace{0.25cm} \theta(\bm{L}_2) \cdot (1) \]
+\[\overline{L_{2i}} = \overline{a_{2i}} \hspace{0.25cm} \theta(L_{2i}) \cdot (1) \]
 \begin{equation}
-    \overline{\bm{L}_2} = \overline{\bm{a}_2} \hspace{0.25cm} \theta(\bm{L}_2) 
+    \overline{L_{2i}} = \overline{a_{2i}} \hspace{0.25cm} \theta(L_{2i}) 
 \end{equation} 
 \paragraph{Second layer weights}
-\[\overline{w_{2i}} = \overline{\bm{L}_2} \frac{\partial}{\partial{w_{2i}}} \bm{L}_2 \]
-\[\overline{w_{2i}} = \overline{\bm{L}_2} \frac{\partial}{\partial{w_{2i}}} \sum_{j} w_{2j}a_{1j} \]
+\[\overline{w_{2ij}} = \overline{L_{2i}} \frac{\partial}{\partial{w_{2ij}}} L_{2i} \]
+\[\overline{w_{2ij}} = \overline{L_{2i}} \frac{\partial}{\partial{w_{2ij}}} \sum_{k} w_{2ik}a_{1k} \]
 \begin{equation}
-    \overline{w_{2i}} = \overline{\bm{L}_2} a_{1i}
+    \overline{w_{2i}} = \overline{L_{2i}} a_{1j}
 \end{equation}
 \paragraph{Input layer activation}
-\[\overline{\bm{a}_{1i}} = \overline{\bm{L}_2} \frac{\partial}{\partial{\bm{a}_{1i}}} \bm{L}_2\]
-\[\overline{\bm{a}_{1i}} = \overline{\bm{L}_2} \frac{\partial}{\partial{\bm{a}_{1i}}} \sum_{j} w_{2j}a_{1j}\]
+\[\overline{a_{1i}} = \overline{\bm{L}_2} \frac{\partial}{\partial{a_{1i}}} \bm{L}_2\]
+\[\overline{a_{1i}} = \overline{\bm{L}_2} \frac{\partial}{\partial{a_{1i}}} \sum_{j} w_{2j}a_{1j}\]
 \begin{equation}
     \overline{\bm{a}_{1i}} = \overline{\bm{L}_2} w_{2i}
 \end{equation}
@@ -261,12 +261,14 @@ Note that $d/dx($ReLU$(x))$ is the heaviside step function $\theta (x)$:
     \overline{\bm{L}_1} = \overline{\bm{a}_1} \hspace{0.125cm} \theta(\bm{L}_1)
 \end{equation}
 \paragraph{Input layer weights}
-\[\overline{\bm{w}_{1i}} = \overline{\bm{L}_1} \frac{\partial}{\partial{\bm{w}_{1i}}} \bm{L}_1\]
-\[\overline{\bm{w}_{1i}} = \overline{\bm{L}_1} \frac{\partial}{\partial{\bm{w}_{1i}}} \sum_{j} \bm{w}_{1j}\bm{x}_{1j}\]
+\[\overline{w_{1i}} = \overline{\bm{L}_1} \frac{\partial}{\partial{w_{1i}}} \bm{L}_1\]
+\[\overline{w_{1i}} = \overline{\bm{L}_1} \frac{\partial}{\partial{w_{1i}}} \sum_{j} w_{1j}\bm{x}_{1j}\]
 \begin{equation}
-    \overline{\bm{w}_{1i}} = \overline{\bm{L}_1} \bm{x}_{1i}
+    \overline{w_{1i}} = \overline{\bm{L}_1} x_{1i}
 \end{equation}
-
+\paragraph
+Notes to self: Grosse follows a per-element approach first, then somehow transformed
+those results into a vectorized form involving (in some cases) re-arranged multiplications and matrix transpose. I am somehwat confused/overwhelmed by this. 
 \subsection{Misc. Remarks}
 \subsubsection{Rounding: Training vs Inference} Since we aim to train a binary classifier, the round() would be necessary for the correct output range. However since round() is not differentiable, we omit it during training, calculating fractional losses instead. We only include round() during inference.
 
