@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.4)  14 OCT 2023 11:17
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.4)  14 OCT 2023 11:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -515,7 +515,7 @@ Overfull \hbox (85.34547pt too wide) in paragraph at lines 177--178
 
 {/usr/local/texlive/2023basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 [2] [3]
-Overfull \hbox (26.15704pt too wide) in paragraph at lines 270--272
+Overfull \hbox (26.15704pt too wide) in paragraph at lines 271--273
 \OT1/cmr/m/n/10 arranged mul-ti-pli-ca-tions and ma-trix trans-pose. I am some-
 hwat con-fused/overwhelmed
  []
@@ -545,7 +545,7 @@ fb></usr/local/texlive/2023basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7
 .pfb></usr/local/texlive/2023basic/texmf-dist/fonts/type1/public/amsfonts/cm/cm
 sy10.pfb></usr/local/texlive/2023basic/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmsy7.pfb>
-Output written on BackpropagationDerivation.pdf (5 pages, 173934 bytes).
+Output written on BackpropagationDerivation.pdf (5 pages, 174422 bytes).
 PDF statistics:
  93 PDF objects out of 1000 (max. 8388607)
  57 compressed objects within 1 object stream
