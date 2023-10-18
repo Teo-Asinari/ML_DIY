@@ -1,3 +1,3 @@
 #!/bin/bash
 pdflatex BackpropagationDerivation.tex
-wslview BackpropagationDerivation.pdf
+#wslview BackpropagationDerivation.pdf

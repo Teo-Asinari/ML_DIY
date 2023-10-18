@@ -265,12 +265,45 @@ Note that $d/dx($ReLU$(x))$ is the heaviside step function $\theta (x)$:
 \[\overline{w_{1ij}} = \overline{L_{1i}} \frac{\partial}{\partial{w_{1ij}}} L_{1i}\]
 \[\overline{w_{1ij}} = \overline{L_{1i}} \frac{\partial}{\partial{w_{1ij}}} \sum_{k} w_{1ik}x_{1k}\]
 \begin{equation}
-    \overline{w_{1i}} = \overline{L_{1i}} x_{1j}
+    \overline{w_{1ij}} = \overline{L_{1i}} x_{1j}
 \end{equation}
-\paragraph
-Notes to self: Grosse follows a per-element approach first, then somehow transformed
-those results into a vectorized form involving (in some cases) re-arranged multiplications and matrix transpose. I am somehwat confused/overwhelmed by this. 
+
+\paragraph{Notes to self} Grosse follows a per-element approach first, then somehow transformed
+those results into a vectorized form involving (in some cases) re-arranged 
+multiplications and matrix transpose. I am somewhat confused/overwhelmed by this. 
+\subsubsection{Vectorized derivation:}
+\subsubsection{Forward pass vectorized:}
+\[\bm{L}_1 = \bm{w}_1 \cdot \bm{x} \]
+\[\bm{a}_1 = \text{ReLU}(\bm{L}_1) \]
+\[\bm{L}_2 = \bm{w}_2 \cdot \bm{a}_1\]
+\[\bm{a}_2 = \text{ReLU}(\bm{L}_2)\]
+\[\bm{L}_3 = \bm{w}_3 \cdot \bm{a}_2\]
+\[\bm{a}_3 = \sigma(\bm{L}_3)\]
+\[\mathcal{L} = \frac{1}{2}\|\bm{a}_3-\bm{t}\|^2\]
+\subsubsection{Backpropagation vectorized:}
+\[\overline{\mathcal{L}} = 1\]
+\[\overline{\bm{a}_3} = \overline{\mathcal{L}} (\bm{a}_3 - \bm{t})\]
+\[\overline{\bm{a}_3} = (\bm{a}_3 - \bm{t})\]
+\[\overline{\bm{L}_3} = \overline{\bm{a}_3} \circ \frac{\partial}{\partial{\bm{L}_3}} \bm{a}_3\]
+\[\overline{\bm{L}_3} = \overline{\bm{a}_3} \circ \frac{\partial}{\partial{\bm{L}_3}} \sigma(\bm{L}_3)\]
+\[\overline{\bm{L}_3} = \overline{\bm{a}_3} \circ \sigma ' (\bm{L}_3)\]
+\[\overline{\bm{w}_3} = \overline{\bm{L}_3} \frac{\partial}{\partial{\bm{w}_3}} \bm{L}_3\]
+\[\overline{\bm{w}_3} = \overline{\bm{L}_3} \frac{\partial}{\partial{\bm{w}_3}} \bm{w}_3 \cdot \bm{a}_2\]
+\[\overline{\bm{w}_3} = \overline{\bm{L}_3} \bm{a}_2\]
+% \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
+% \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
+% \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
+% \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
+% \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
+% \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
+
+
 \subsection{Misc. Remarks}
 \subsubsection{Rounding: Training vs Inference} Since we aim to train a binary classifier, the round() would be necessary for the correct output range. However since round() is not differentiable, we omit it during training, calculating fractional losses instead. We only include round() during inference.
+\subsubsection{2023-10-18 Remaining points of confusion} How does one go about, concretely, on an element-by-element
+level, determining say the matrix equivalent of derivative of a function applied to a matrix? 
+Is the derivative applied element-wise to the existing matrix, yielding a matrix of the same dimension as the original?
+Then we need to have a clean notation for that without getting confusing/ambiguous. I find some of the notational
+conventions here unclear and confusing. The current approach is vague and imprecise, which I find bothersome.
 
 \end{document}
