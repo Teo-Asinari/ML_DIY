@@ -3,6 +3,7 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{tikz}
+\usepackage{url}
 \usetikzlibrary{positioning}
 
 \title{Basic MLP with manually-derived Backprop}
@@ -305,5 +306,18 @@ level, determining say the matrix equivalent of derivative of a function applied
 Is the derivative applied element-wise to the existing matrix, yielding a matrix of the same dimension as the original?
 Then we need to have a clean notation for that without getting confusing/ambiguous. I find some of the notational
 conventions here unclear and confusing. The current approach is vague and imprecise, which I find bothersome.
+\subsubsection{2023-10-19 Remaining questions}
+\begin{itemize}
+    \item What is the meaning of $\circ$ in the context of these vectorized equations? What is the difference between $\circ$ and $\cdot$?
+    Answer: According to ChatGPT, it is the composition of the linear transformations represented by the matrices.
+    Apparently ChatGPT can also be coaxed into thinking it's the same as matrix multiplication, i.e., $A \circ B = AB$.
+    OK, so if one looks at  \url{https://math.libretexts.org/Bookshelves/Linear_Algebra/Interactive_Linear_Algebra_(Margalit_and_Rabinoff)/03%3A_Linear_Transformations_and_Matrix_Algebra/3.04%3A_Matrix_Multiplication#:~:text=As%20we%20will%20see%2C%20composition,of%20transformations%20and%20of%20matrices}.
+    It does seem like it really IS matrix multiplication, but then WHY bother to use this symbol? I am somewhat confused but am still feeling reassured that 
+    I am justified in assuming it's equiv. to matrix multiplication.
+    \item Why are some of the matrices in these vectorized backprops transposed? Examples from Roger Grosse:
+    \item \[ \overline{\bm{W}^{(2)}} = \overline{\bm{y}}\bm{h}^{T} \]
+    \item This would be so much easier if they stated the dimensions of the various matrices/vectors in the equations
+    \item Other questions: What does it mean to take for example: $\frac{\partial}{\partial{\bm{w}_3}} (\bm{w}_3 \cdot \bm{a}_2)$?
+\end{itemize}
 
 \end{document}
