@@ -318,6 +318,14 @@ conventions here unclear and confusing. The current approach is vague and imprec
     \item \[ \overline{\bm{W}^{(2)}} = \overline{\bm{y}}\bm{h}^{T} \]
     \item This would be so much easier if they stated the dimensions of the various matrices/vectors in the equations
     \item Other questions: What does it mean to take for example: $\frac{\partial}{\partial{\bm{w}_3}} (\bm{w}_3 \cdot \bm{a}_2)$?
+    Answer: There are two observations. One, that in general, for $\bm{x} \in \mathbb{R}^n, f(\bm{x}): \mathbb{R}^n \mapsto \mathbb{R}$,
+    we have that $\frac{\partial{f}}{\partial{\bm{x}}} = [\frac{\partial{f}}{\partial{x_1}}, \frac{\partial{f}}{\partial{x_2}}, ...]$
+    Also, recall that in our MLP: $\bm{w}_3 = [w_{311}, w_{312}]$ and $\bm{a}_2 = [a_{21}, a_{22}]$
+    so $\bm{w}_3 \cdot \bm{a}_2 = w_{311}a_{21} + w_{312}a_{22}$, 
+    so $\frac{\partial{\bm{w}_3 \cdot \bm{a}_2}}{\partial{\bm{w}_3}} = [\frac{\partial{}}{\partial{w_{311}}} (w_{311}a_{21} + w_{312}a_{22}), \frac{\partial}{\partial{w_{312}}}(w_{311}a_{21} + w_{312}a_{22})]$
+    so $\frac{\partial{\bm{w}_3 \cdot \bm{a}_2}}{\partial{\bm{w}_3}} = [a_{21} + w_{312}a_{22}, w_{311}a_{21} + a_{22}] \neq \bm{a}_2$
+
+
 \end{itemize}
 
 \end{document}
