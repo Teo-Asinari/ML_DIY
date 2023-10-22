@@ -299,6 +299,9 @@ multiplications and matrix transpose. I am somewhat confused/overwhelmed by this
 \[\overline{\bm{a}_2} = \overline{L_3} \begin{bmatrix}w_{311} \\ w_{312}\end{bmatrix}\]
 \begin{equation}\overline{\bm{a}_2} = \overline{L_3} \bm{w}_3^T\end{equation}
 \[\overline{\bm{L}_2} = \overline{a_2} \frac{\partial}{\partial{\bm{L}_2}} \bm{a}_2\]
+\[\overline{\bm{L}_2} = \overline{a_2} \frac{\partial}{\partial{\bm{L}_2}} \text{ReLU}(\bm{L}_2)\]
+\[\overline{\bm{L}_2} = \overline{a_2} \theta(\bm{L}_2) \cdot 1\]
+\begin{equation}\overline{\bm{L}_2} = \overline{a_2} \theta(\bm{L}_2) \end{equation}
 % \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
 % \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
 % \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
