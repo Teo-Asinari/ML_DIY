@@ -27,10 +27,10 @@ of size-2 vectors.
     \node (hiddenLayer) at (4,1) {$\bm{L_2}$};
     \node (weight2) at (3.5,1.75) {$\bm{w_2}$};
     \node (activation2) at (5,1) {$\bm{a_2}$};
-    \node (outputLayer) at (6,1) {$\bm{L_3}$};
+    \node (outputLayer) at (6,1) {$L_3$};
     \node (weight3) at (5.5,1.75) {$\bm{w_3}$};
-    \node (activation3) at (7,1) {$\bm{a_3}$};
-    \node (target) at (7.5,1.75) {$\bm{t}$};
+    \node (activation3) at (7,1) {$a_3$};
+    \node (target) at (7.5,1.75) {$t$};
     \node (loss) at (8,1) {$\mathcal{L}$};
 
 
@@ -298,6 +298,7 @@ multiplications and matrix transpose. I am somewhat confused/overwhelmed by this
 \[\overline{\bm{a}_2} = \overline{L_3} \begin{bmatrix}\frac{\partial{}}{\partial{a_{21}}} (w_{311}a_{21} + w_{312}a_{22})\\ \frac{\partial}{\partial{a_{22}}}(w_{311}a_{21} + w_{312}a_{22})\end{bmatrix}\]
 \[\overline{\bm{a}_2} = \overline{L_3} \begin{bmatrix}w_{311} \\ w_{312}\end{bmatrix}\]
 \begin{equation}\overline{\bm{a}_2} = \overline{L_3} \bm{w}_3^T\end{equation}
+\[\overline{\bm{L}_2} = \overline{a_2} \frac{\partial}{\partial{\bm{L}_2}} \bm{a}_2\]
 % \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
 % \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
 % \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
@@ -330,8 +331,12 @@ conventions here unclear and confusing. The current approach is vague and imprec
     so $\bm{w}_3 \cdot \bm{a}_2 = w_{311}a_{21} + w_{312}a_{22}$, 
     so $\frac{\partial{\bm{w}_3 \cdot \bm{a}_2}}{\partial{\bm{w}_3}} = [\frac{\partial{}}{\partial{w_{311}}} (w_{311}a_{21} + w_{312}a_{22}), \frac{\partial}{\partial{w_{312}}}(w_{311}a_{21} + w_{312}a_{22})]$
     so $\frac{\partial{\bm{w}_3 \cdot \bm{a}_2}}{\partial{\bm{w}_3}} = [a_{21} + w_{312}a_{22}, w_{311}a_{21} + a_{22}] \neq \bm{a}_2$
-
-
+\end{itemize}
+\subsubsection{2023-10-22 Remaining questions}
+\begin{itemize}
+    \item what is the derivative of an $n \times m$ vector/matrix with respect to another matrix of the same dimension? 
+    ChatGPT: in general, the derivative of one vector w.r.t. another is called the Jacobian.
+    The generalized answer for derivative of a matrix w.r.t another is still unanswered.
 \end{itemize}
 
 \end{document}
