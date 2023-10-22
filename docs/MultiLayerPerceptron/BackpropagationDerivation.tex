@@ -21,13 +21,13 @@ of size-2 vectors.
 \subsubsection{Vectorized Diagram (Equiv to Roger Grosse' 'Computational Graph')}
 \begin{tikzpicture}[]
     \node (input) at (1,1) {$\bm{x}$};
-    \node (weight1) at (1.5,1.75) {$\bm{w_1}$};
-    \node (inputLayer) at (2,1) {$\bm{L_1}$};
+    \node (weight1) at (1.5,1.75) {$\bm{W_1}$};
+    \node (inputLayer) at (2,1) {$\bm{l_1}$};
     \node (activation1) at (3,1) {$\bm{a_1}$};
-    \node (hiddenLayer) at (4,1) {$\bm{L_2}$};
-    \node (weight2) at (3.5,1.75) {$\bm{w_2}$};
+    \node (hiddenLayer) at (4,1) {$\bm{l_2}$};
+    \node (weight2) at (3.5,1.75) {$\bm{W_2}$};
     \node (activation2) at (5,1) {$\bm{a_2}$};
-    \node (outputLayer) at (6,1) {$L_3$};
+    \node (outputLayer) at (6,1) {$l_3$};
     \node (weight3) at (5.5,1.75) {$\bm{w_3}$};
     \node (activation3) at (7,1) {$a_3$};
     \node (target) at (7.5,1.75) {$t$};
@@ -99,24 +99,24 @@ of size-2 vectors.
     \node[input] (input2) at (1,-1) {$x_2$};
 
 % Input layer 1 (L_1)
-    \node[inputLayer] (inputLayer1) at (2.5,1) {$L_{11}$};
-    \node[inputLayer] (inputLayer2) at (2.5, -1) {$L_{12}$};
-    \node[weight] (weight111) at (1.7, 2) {$w_{111}$};
-    \node[weight] (weight112) at (2.8, 2) {$w_{112}$};
-    \node[weight] (weight121) at (1.7, -2) {$w_{121}$};
-    \node[weight] (weight122) at (2.8, -2) {$w_{122}$};
+    \node[inputLayer] (inputLayer1) at (2.5,1) {$l_{11}$};
+    \node[inputLayer] (inputLayer2) at (2.5, -1) {$l_{12}$};
+    \node[weight] (weight111) at (1.7, 2) {$W_{111}$};
+    \node[weight] (weight112) at (2.8, 2) {$W_{112}$};
+    \node[weight] (weight121) at (1.7, -2) {$W_{121}$};
+    \node[weight] (weight122) at (2.8, -2) {$W_{122}$};
 
 % Input Layer Activation
     \node[activation] (activation11) at (4.5, 1) {$a_{11}$ (ReLU)};
     \node[activation] (activation12) at (4.5, -1) {$a_{12}$ (ReLU)};
 
 % Hidden layer 2 (L_2)
-    \node[hidden] (hidden1) at (6.5, 1) {$L_{21}$};
-    \node[hidden] (hidden2) at (6.5, -1) {$L_{22}$};
-    \node[weight] (weight211) at (6, 2) {$w_{211}$};
-    \node[weight] (weight212) at (7, 2) {$w_{212}$};
-    \node[weight] (weight221) at (6, -2) {$w_{221}$};
-    \node[weight] (weight222) at (7, -2) {$w_{222}$};
+    \node[hidden] (hidden1) at (6.5, 1) {$l_{21}$};
+    \node[hidden] (hidden2) at (6.5, -1) {$l_{22}$};
+    \node[weight] (weight211) at (6, 2) {$W_{211}$};
+    \node[weight] (weight212) at (7, 2) {$W_{212}$};
+    \node[weight] (weight221) at (6, -2) {$W_{221}$};
+    \node[weight] (weight222) at (7, -2) {$W_{222}$};
 
 %
 
@@ -124,7 +124,7 @@ of size-2 vectors.
     \node[activation] (activation21) at (8.5, 1) {$a_{21}$ (ReLU)};
     \node[activation] (activation22) at (8.5, -1) {$a_{22}$ (ReLU)};
 % Output layer (L_3)
-    \node[output] (output1) at (10.8, 0) {$L_{3}$};
+    \node[output] (output1) at (10.8, 0) {$l_{3}$};
     \node[weight] (weight311) at (10, 1.25) {$w_{311}$};
     \node[weight] (weight312) at (11.6, 1.25) {$w_{312}$};
 
@@ -298,10 +298,10 @@ multiplications and matrix transpose. I am somewhat confused/overwhelmed by this
 \[\overline{\bm{a}_2} = \overline{L_3} \begin{bmatrix}\frac{\partial{}}{\partial{a_{21}}} (w_{311}a_{21} + w_{312}a_{22})\\ \frac{\partial}{\partial{a_{22}}}(w_{311}a_{21} + w_{312}a_{22})\end{bmatrix}\]
 \[\overline{\bm{a}_2} = \overline{L_3} \begin{bmatrix}w_{311} \\ w_{312}\end{bmatrix}\]
 \begin{equation}\overline{\bm{a}_2} = \overline{L_3} \bm{w}_3^T\end{equation}
-\[\overline{\bm{L}_2} = \overline{a_2} \frac{\partial}{\partial{\bm{L}_2}} \bm{a}_2\]
-\[\overline{\bm{L}_2} = \overline{a_2} \frac{\partial}{\partial{\bm{L}_2}} \text{ReLU}(\bm{L}_2)\]
-\[\overline{\bm{L}_2} = \overline{a_2} \theta(\bm{L}_2) \cdot 1\]
-\begin{equation}\overline{\bm{L}_2} = \overline{a_2} \theta(\bm{L}_2) \end{equation}
+\[\overline{\bm{l}_2} = \overline{a_2} \frac{\partial}{\partial{\bm{l}_2}} \bm{a}_2\]
+\[\overline{\bm{l}_2} = \overline{a_2} \frac{\partial}{\partial{\bm{l}_2}} \text{ReLU}(\bm{l}_2)\]
+\[\overline{\bm{l}_2} = \overline{a_2} \theta(\bm{l}_2) \cdot 1\]
+\begin{equation}\overline{\bm{l}_2} = \overline{a_2} \theta(\bm{l}_2) \end{equation}
 % \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
 % \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
 % \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
