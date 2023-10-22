@@ -333,7 +333,10 @@ conventions here unclear and confusing. The current approach is vague and imprec
     Also, recall that in our MLP: $\bm{w}_3 = [w_{311}, w_{312}]$ and $\bm{a}_2 = [a_{21}, a_{22}]$
     so $\bm{w}_3 \cdot \bm{a}_2 = w_{311}a_{21} + w_{312}a_{22}$, 
     so $\frac{\partial{\bm{w}_3 \cdot \bm{a}_2}}{\partial{\bm{w}_3}} = [\frac{\partial{}}{\partial{w_{311}}} (w_{311}a_{21} + w_{312}a_{22}), \frac{\partial}{\partial{w_{312}}}(w_{311}a_{21} + w_{312}a_{22})]$
-    so $\frac{\partial{\bm{w}_3 \cdot \bm{a}_2}}{\partial{\bm{w}_3}} = [a_{21} + w_{312}a_{22}, w_{311}a_{21} + a_{22}] \neq \bm{a}_2$
+    so $\frac{\partial{\bm{w}_3 \cdot \bm{a}_2}}{\partial{\bm{w}_3}} = [a_{21} + \frac{\partial}{\partial{w_{311}}}(w_{312}a_{22}), \frac{\partial}{\partial{w_{312}}}(w_{311}a_{21}) + a_{22}]$
+    so $\frac{\partial{\bm{w}_3 \cdot \bm{a}_2}}{\partial{\bm{w}_3}} = [a_{21} + 0, 0 + a_{22}]$
+    so $\frac{\partial{\bm{w}_3 \cdot \bm{a}_2}}{\partial{\bm{w}_3}} = [a_{21},a_{22}]$
+    so $\frac{\partial{\bm{w}_3 \cdot \bm{a}_2}}{\partial{\bm{w}_3}} = \bm{a}_2$
 \end{itemize}
 \subsubsection{2023-10-22 Remaining questions}
 \begin{itemize}
