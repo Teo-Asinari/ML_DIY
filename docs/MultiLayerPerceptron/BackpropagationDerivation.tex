@@ -178,6 +178,11 @@ of size-2 vectors.
 \end{tikzpicture}
 
 \subsection{Definitions}
+\subsubsection{Remark on general notation}
+Since it seems that mathematical notation in this field tends to suffer from overloading, imprecision/lack of specificity, a lack of convention, poor readability, and a generally poor aesthetic/deisgn sense, I am going to try to avoid worsening the situation. So, for the purpose of this work, 
+all non-bold variables denote scalars. A bold lower-case variable denotes a vector, a bold upper-case a Matrix. 
+A non-bold lower-case may denotes either an arbitrary scalar variable or if subscripted typically an element of a vector.
+A non-bold upper-case, if subscripted, will typically denote a matrix element.
 \subsubsection{Remark on weight notation}
 $w_{i,j,k}$ is to say the weight at the $i$-th layer, $j$-th neuron, $k$-th weight.
 Hence $w_{111}$ is the first weight of the first neuron in the first layer, etc.
@@ -210,26 +215,26 @@ Then, going backwards through the 'computational graph', starting at the end:
 \end{equation}
 \paragraph{Final layer}
 $\bm{N.B.}$ I use $\sigma$ to denote the sigmoid function here, not an activation function.
-\[\overline{L_3} = \overline{a_3} \frac{\partial{a_3}}{\partial{L_3}}\]
-\[\overline{L_3} = \overline{a_3} \frac{\partial}{\partial{L_3}} \sigma(L_3)\]
+\[\overline{l_3} = \overline{a_3} \frac{\partial{a_3}}{\partial{l_3}}\]
+\[\overline{l_3} = \overline{a_3} \frac{\partial}{\partial{l_3}} \sigma(l_3)\]
 \begin{equation}
-    \overline{L_3} = \overline{a_3} \hspace{0.125cm} \sigma(L_3) (1 - \sigma(L_3))
+    \overline{l_3} = \overline{a_3} \hspace{0.125cm} \sigma(l_3) (1 - \sigma(l_3))
 \end{equation}
 \paragraph{Final layer weights}
-\[\overline{w_{31i}} = \overline{L_3} \frac{\partial}{\partial{w_{31i}}} L_3\]
-\[\overline{w_{31i}} = \overline{L_3} \frac{\partial}{\partial{w_{31i}}} \sum_{j} w_{31j} a_{2j}\]
+\[\overline{w_{31i}} = \overline{l_3} \frac{\partial}{\partial{w_{31i}}} l_3\]
+\[\overline{w_{31i}} = \overline{l_3} \frac{\partial}{\partial{w_{31i}}} \sum_{j} w_{31j} a_{2j}\]
 \begin{equation}
-    \overline{w_{31i}} = \overline{L_3} a_{2i}
+    \overline{w_{31i}} = \overline{l_3} a_{2i}
 \end{equation}
 \paragraph{Second layer activation}
-\[\overline{a_{2i}} = \overline{L_3} \frac{\partial}{\partial{a_{2i}}} L_3\]
-\[\overline{a_{2i}} = \overline{L_3} \frac{\partial}{\partial{a_{2i}}} \sum_{j} w_{31j}a_{2j}\]
+\[\overline{a_{2i}} = \overline{l_3} \frac{\partial}{\partial{a_{2i}}} l_3\]
+\[\overline{a_{2i}} = \overline{l_3} \frac{\partial}{\partial{a_{2i}}} \sum_{j} w_{31j}a_{2j}\]
 \begin{equation}
-    \overline{a_{2i}} = \overline{L_3} w_{31i}
+    \overline{a_{2i}} = \overline{l_3} w_{31i}
 \end{equation}
 \paragraph{Second layer}
-\[\overline{L_{2i}} = \overline{a_{2i}} \frac{\partial}{\partial{L_{2i}}} a_{2i} \]
-\[\overline{L_{2i}} = \overline{a_{2i}} \frac{\partial}{\partial{L_{2i}}}\text{ReLU}(L_{2i}) \]
+\[\overline{l_{2i}} = \overline{a_{2i}} \frac{\partial}{\partial{l_{2i}}} a_{2i} \]
+\[\overline{l_{2i}} = \overline{a_{2i}} \frac{\partial}{\partial{l_{2i}}}\text{ReLU}(l_{2i}) \]
 Note that $d/dx($ReLU$(x))$ is the heaviside step function $\theta (x)$: 
 \[
 \begin{cases}
@@ -238,35 +243,35 @@ Note that $d/dx($ReLU$(x))$ is the heaviside step function $\theta (x)$:
 \end{cases}
 \]
 
-\[\overline{L_{2i}} = \overline{a_{2i}} \hspace{0.25cm} \theta(L_{2i}) \cdot (1) \]
+\[\overline{l_{2i}} = \overline{a_{2i}} \hspace{0.25cm} \theta(l_{2i}) \cdot (1) \]
 \begin{equation}
-    \overline{L_{2i}} = \overline{a_{2i}} \hspace{0.25cm} \theta(L_{2i}) 
+    \overline{l_{2i}} = \overline{a_{2i}} \hspace{0.25cm} \theta(l_{2i}) 
 \end{equation} 
 \paragraph{Second layer weights}
-\[\overline{w_{2ij}} = \overline{L_{2i}} \frac{\partial}{\partial{w_{2ij}}} L_{2i} \]
-\[\overline{w_{2ij}} = \overline{L_{2i}} \frac{\partial}{\partial{w_{2ij}}} \sum_{k} w_{2ik}a_{1k} \]
+\[\overline{W_{2ij}} = \overline{l_{2i}} \frac{\partial}{\partial{W_{2ij}}} l_{2i} \]
+\[\overline{W_{2ij}} = \overline{l_{2i}} \frac{\partial}{\partial{W_{2ij}}} \sum_{k} W_{2ik}a_{1k} \]
 \begin{equation}
-    \overline{w_{2i}} = \overline{L_{2i}} a_{1j}
+    \overline{W_{2ij}} = \overline{l_{2i}} a_{1j}
 \end{equation}
 \paragraph{Input layer activation}
-\[\overline{a_{1i}} = \overline{L_{21}} \frac{\partial}{\partial{a_{1i}}} L_{21} + \overline{L_{22}} \frac{\partial}{\partial{a_{1i}}} L_{22}\]
-\[\overline{a_{1i}} = \overline{L_{21}} \frac{\partial}{\partial{a_{1i}}} \sum_{j} w_{21j}a_{1j} + \overline{L_{22}} \frac{\partial}{\partial{a_{1i}}} \sum_{j} w_{22j}a_{1j}\]
+\[\overline{a_{1i}} = \overline{l_{21}} \frac{\partial}{\partial{a_{1i}}} l_{21} + \overline{l_{22}} \frac{\partial}{\partial{a_{1i}}} l_{22}\]
+\[\overline{a_{1i}} = \overline{l_{21}} \frac{\partial}{\partial{a_{1i}}} \sum_{j} W_{21j}a_{1j} + \overline{l_{22}} \frac{\partial}{\partial{a_{1i}}} \sum_{j} W_{22j}a_{1j}\]
 
 \begin{equation}
-\overline{a_{1i}} = \overline{L_{21}} w_{21i} + \overline{L_{22}} w_{22i}
+\overline{a_{1i}} = \overline{l_{21}} W_{21i} + \overline{l_{22}} W_{22i}
 \end{equation}
 \paragraph{Input layer}
-\[\overline{L_{1i}} = \overline{a_{1i}} \frac{\partial}{\partial{L_{1i}}} a_1\]
-\[\overline{L_{1i}} = \overline{a_{1i}} \frac{\partial}{\partial{L_{1i}}} \text{ReLU}(L_{1i})\]
-\[\overline{L_{1i}} = \overline{a_{1i}} \hspace{0.125cm} \theta(L_{1i}) \cdot (1)\]
+\[\overline{l_{1i}} = \overline{a_{1i}} \frac{\partial}{\partial{l_{1i}}} a_{1i}\]
+\[\overline{l_{1i}} = \overline{a_{1i}} \frac{\partial}{\partial{l_{1i}}} \text{ReLU}(l_{1i})\]
+\[\overline{l_{1i}} = \overline{a_{1i}} \hspace{0.125cm} \theta(l_{1i}) \cdot (1)\]
 \begin{equation}
-    \overline{L_{1i}} = \overline{a_{1i}} \hspace{0.125cm} \theta(L_{1i})
+    \overline{l_{1i}} = \overline{a_{1i}} \hspace{0.125cm} \theta(l_{1i})
 \end{equation}
 \paragraph{Input layer weights}
-\[\overline{w_{1ij}} = \overline{L_{1i}} \frac{\partial}{\partial{w_{1ij}}} L_{1i}\]
-\[\overline{w_{1ij}} = \overline{L_{1i}} \frac{\partial}{\partial{w_{1ij}}} \sum_{k} w_{1ik}x_{1k}\]
+\[\overline{W_{1ij}} = \overline{l_{1i}} \frac{\partial}{\partial{W_{1ij}}} l_{1i}\]
+\[\overline{W_{1ij}} = \overline{l_{1i}} \frac{\partial}{\partial{W_{1ij}}} \sum_{k} W_{1ik}x_{1k}\]
 \begin{equation}
-    \overline{w_{1ij}} = \overline{L_{1i}} x_{1j}
+    \overline{W_{1ij}} = \overline{l_{1i}} x_{1j}
 \end{equation}
 
 \paragraph{Notes to self} Grosse follows a per-element approach first, then somehow transformed
@@ -302,7 +307,7 @@ multiplications and matrix transpose. I am somewhat confused/overwhelmed by this
 \[\overline{\bm{l}_2} = \overline{a_2} \frac{\partial}{\partial{\bm{l}_2}} \text{ReLU}(\bm{l}_2)\]
 \[\overline{\bm{l}_2} = \overline{a_2} \theta(\bm{l}_2) \cdot 1\]
 \begin{equation}\overline{\bm{l}_2} = \overline{a_2} \theta(\bm{l}_2) \end{equation}
-% \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
+\[\overline{\bm{W}_2} = \overline{\bm{l}_2} \frac{\partial}{\partial{\bm{W}_2}} \bm{l}_2\]
 % \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
 % \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
 % \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
