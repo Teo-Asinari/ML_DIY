@@ -382,6 +382,8 @@ conventions here unclear and confusing. The current approach is vague and imprec
     \item The naive application of the chain-rule for backprop might not apply cleanly in the vectorized approach, I think,
     because the derivatives WRT loss of prev layers can be non-scalar.
     \item Tomorrow I will go through and 'matirixize/vectorize' the per-element derivations by inspection.
+    \item I think one possibly MAJOR mistake that I have made is to have treated $w_{11i}$ and $w_{12i}$ as part of 
+    the same matrix? That might have caused issues in the backprop calculation
 
 \end{itemize}
 
