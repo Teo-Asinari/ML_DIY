@@ -189,7 +189,7 @@ Hence $w_{111}$ is the first weight of the first neuron in the first layer, etc.
 \subsubsection{Remark on layer notation}
 This is a sub-case of the weight notation. I.e., $L_{ij}$ is the scalar value of the $j$-th neuron at the $i$-th layer, etc.
 \subsubsection{Neuron firing calculation} This is just a straightforward dot-product. We have:
-\[L_{ij}=\bm{w}_{ij}\bm{x}_i \]
+\[l_{ij}=\bm{W}_{ij}\bm{x}_i \]
 Where $\bm{x}_i$ in this case is referring to a more general notion of 'layer input', not necessarily just the first input to the network as in the diagrams above.
 \subsection{BackPropagation Derivation}
 \paragraph{Notation for derivative of loss w.r.t. to a function} I will be using the following: $\overline{f} = \frac{\partial{\mathcal{L}}}{\partial{f}}$. This notation was introduced by Roger Grosse from the University of Toronto.
@@ -307,9 +307,10 @@ multiplications and matrix transpose. I am somewhat confused/overwhelmed by this
 \[\overline{\bm{l}_2} = \overline{\bm{a}_2} \frac{\partial}{\partial{\bm{l}_2}} \text{ReLU}(\bm{l}_2)\]
 \[\overline{\bm{l}_2} = \overline{\bm{a}_2} \theta(\bm{l}_2) \cdot 1\]
 \begin{equation}\overline{\bm{l}_2} = \overline{\bm{a}_2} \theta(\bm{l}_2)  \end{equation}
-\[\overline{\bm{W}_2} = \overline{\bm{l}_2} \frac{\partial}{\partial{\bm{W}_2}} \bm{l}_2\]
-\[\overline{\bm{W}_2} = \overline{\bm{l}_2} \frac{\partial}{\partial{\bm{W}_2}} \begin{bmatrix} l_{21} \\ l_{22} \end{bmatrix}\]
-\[\overline{\bm{W}_2} = \overline{\bm{l}_2} \frac{\partial}{\partial{\bm{W}_2}} \begin{bmatrix} w_{211}a_{11} + w_{212}a_{12} \\ w_{221}a_{11} + w_{222}a_{12} \end{bmatrix}\]
+% \[\overline{\bm{W}_2} = \overline{\bm{l}_2} \frac{\partial}{\partial{\bm{W}_2}} \bm{l}_2\]
+% \[\overline{\bm{W}_2} = \overline{\bm{l}_2} \frac{\partial}{\partial{\bm{W}_2}} \begin{bmatrix} l_{21} \\ l_{22} \end{bmatrix}\]
+% \[\overline{\bm{W}_2} = \overline{\bm{l}_2} \frac{\partial}{\partial{\bm{W}_2}} \begin{bmatrix} w_{211}a_{11} + w_{212}a_{12} \\ w_{221}a_{11} + w_{222}a_{12} \end{bmatrix}\]
+% \[\overline{\bm{W}_2} = \overline{\bm{l}_2} \frac{\partial}{\partial{\bm{W}_2}} \begin{bmatrix} w_{211}a_{11} + w_{212}a_{12} \\ w_{221}a_{11} + w_{222}a_{12} \end{bmatrix}\]
 % \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
 % \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
 % \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
@@ -357,6 +358,31 @@ conventions here unclear and confusing. The current approach is vague and imprec
     \item is the vectorized solution really even necessary? It's quite confusing and unclear to work with algebraically. 
     Example: what is the type of $\overline{\bm{l}_2}$? It seems like it's the product of two identically-sized (2,1) vectors? How is that even defined? I am confused. The per-element approach seems easier to program into code.
     \item I think the vectorized approach might just be overkill. I will read \url{https://brilliant.org/wiki/backpropagation/} and think more about this.
+\end{itemize}
+\subsubsection{2023-10-25 Notes}
+\begin{itemize}
+    \item I am trying to think through the implementation of backpropagation and \\
+    it seems like the main advantage of this approach is to minimize redundant calculations.\\
+    The approach will have to involve somehow storing the value of the derivative of each 'node' \\
+    (in the sense of vertex in the full computation graph, where each vertex represents a single scalar) \\
+    in order to reuse that value. I could implement this per-element but I am nearly certain it would be way 
+    more computationally expensive than a vectorized approach.
+    \item I am looking at the per-element equations and it seems that based off of them, 
+    since the derivative w.r.t. loss (overline) calculations are per-element, that they are at-most the same
+    dimension as the original vectors/matrices, (e.g., $\overline{\bm{W}_{ijk}}$ has the same dimension as $\bm{W}_{ijk}$),
+    only being further 'compressible' IFF they have algebraically equivalent values.
+    \item the other issue with backprop is my confusion about the relationship between the algebraic expressions derived here and 
+    exact update values applied to the weights. 
+    \item So, I think a better approach to obtain the vectorized definitions for backprop is to 'derive' them
+    by finding vector/matrix expressions that are 'equivalent' to the per-element derivation, with the added constraint 
+    that the 'overline' vector/matrix has to have the SAME dimension as the original.
+    ANSWER TO THE QUESTION: We first analytically determine the derivative of the error function w.r.t. to all weights in the network using backprop/chain rule.
+    THEN, we evaluate the error function at a given 'point' (namely, the error function is a function of the expected output and generated outputs), and apply 
+    and from there backtrack to get the 'derivative WRT the weight' applied at that specific training point. 
+    \item The naive application of the chain-rule for backprop might not apply cleanly in the vectorized approach, I think,
+    because the derivatives WRT loss of prev layers can be non-scalar.
+    \item Tomorrow I will go through and 'matirixize/vectorize' the per-element derivations by inspection.
+
 \end{itemize}
 
 \end{document}
