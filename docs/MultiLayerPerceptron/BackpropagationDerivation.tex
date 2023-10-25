@@ -279,35 +279,37 @@ those results into a vectorized form involving (in some cases) re-arranged
 multiplications and matrix transpose. I am somewhat confused/overwhelmed by this. 
 \subsubsection{Vectorized derivation:}
 \subsubsection{Forward pass vectorized:}
-\[\bm{L}_1 = \bm{w}_1 \cdot \bm{x} \]
-\[\bm{a}_1 = \text{ReLU}(\bm{L}_1) \]
-\[\bm{L}_2 = \bm{w}_2 \cdot \bm{a}_1\]
-\[\bm{a}_2 = \text{ReLU}(\bm{L}_2)\]
-\[L_3 = \bm{w}_3 \cdot \bm{a}_2\]
-\[a_3 = \sigma(L_3)\]
+\[\bm{l}_1 = \bm{W}_1 \cdot \bm{x} \]
+\[\bm{a}_1 = \text{ReLU}(\bm{l}_1) \]
+\[\bm{l}_2 = \bm{W}_2 \cdot \bm{a}_1\]
+\[\bm{a}_2 = \text{ReLU}(\bm{l}_2)\]
+\[l_3 = \bm{w}_3 \cdot \bm{a}_2\]
+\[a_3 = \sigma(l_3)\]
 \[\mathcal{L} = \frac{1}{2}(a_3-t)^2\]
 \subsubsection{Backpropagation vectorized:}
 \begin{equation}\overline{\mathcal{L}} = 1\end{equation}
 \[\overline{a_3} = \overline{\mathcal{L}} (a_3 - t)\]
-\[\overline{a_3} = (a_3 - t)\]
-\[\overline{L_3} = \overline{a_3} \times \frac{\partial}{\partial{L_3}} a_3\]
-\[\overline{L_3} = \overline{a_3} \times \frac{\partial}{\partial{L_3}} \sigma(L_3)\]
-\begin{equation}\overline{L_3} = \overline{a_3} \times \sigma ' (L_3)\end{equation}
-\[\overline{\bm{w}_3} = \overline{L_3} \frac{\partial}{\partial{\bm{w}_3}} L_3\]
-\[\overline{\bm{w}_3} = \overline{L_3} \frac{\partial}{\partial{\bm{w}_3}} \bm{w}_3 \cdot \bm{a}_2\]
-\[\overline{\bm{w}_3} = \overline{L_3} \begin{bmatrix}\frac{\partial{}}{\partial{w_{311}}} (w_{311}a_{21} + w_{312}a_{22})\\ \frac{\partial}{\partial{w_{312}}}(w_{311}a_{21} + w_{312}a_{22})\end{bmatrix}\]
-\[\overline{\bm{w}_3} = \overline{L_3} \begin{bmatrix}a_{21}\\ a_{22}\end{bmatrix}\]
-\begin{equation}\overline{\bm{w}_3} = \overline{L_3} \bm{a}_2\end{equation}
-\[\overline{\bm{a}_2} = \overline{L_3} \frac{\partial}{\partial{\bm{a}_2}} L_3\]
-\[\overline{\bm{a}_2} = \overline{L_3} \frac{\partial}{\partial{\bm{a}_2}} \bm{w}_3 \cdot \bm{a}_2\]
-\[\overline{\bm{a}_2} = \overline{L_3} \begin{bmatrix}\frac{\partial{}}{\partial{a_{21}}} (w_{311}a_{21} + w_{312}a_{22})\\ \frac{\partial}{\partial{a_{22}}}(w_{311}a_{21} + w_{312}a_{22})\end{bmatrix}\]
-\[\overline{\bm{a}_2} = \overline{L_3} \begin{bmatrix}w_{311} \\ w_{312}\end{bmatrix}\]
-\begin{equation}\overline{\bm{a}_2} = \overline{L_3} \bm{w}_3^T\end{equation}
-\[\overline{\bm{l}_2} = \overline{a_2} \frac{\partial}{\partial{\bm{l}_2}} \bm{a}_2\]
-\[\overline{\bm{l}_2} = \overline{a_2} \frac{\partial}{\partial{\bm{l}_2}} \text{ReLU}(\bm{l}_2)\]
-\[\overline{\bm{l}_2} = \overline{a_2} \theta(\bm{l}_2) \cdot 1\]
-\begin{equation}\overline{\bm{l}_2} = \overline{a_2} \theta(\bm{l}_2) \end{equation}
+\[\overline{a_3} = (a_3 - t) \hspace*{0.125cm}(\text{Scalar})\]
+\[\overline{l_3} = \overline{a_3} \times \frac{\partial}{\partial{l_3}} a_3\]
+\[\overline{l_3} = \overline{a_3} \times \frac{\partial}{\partial{l_3}} \sigma(l_3)\]
+\begin{equation}\overline{l_3} = \overline{a_3} \times \sigma ' (l_3) \hspace*{0.125cm} (\text{scalar})\end{equation}
+\[\overline{\bm{w}_3} = \overline{l_3} \frac{\partial}{\partial{\bm{w}_3}} l_3\]
+\[\overline{\bm{w}_3} = \overline{l_3} \frac{\partial}{\partial{\bm{w}_3}} \bm{w}_3 \cdot \bm{a}_2\]
+\[\overline{\bm{w}_3} = \overline{l_3} \begin{bmatrix}\frac{\partial{}}{\partial{w_{311}}} (w_{311}a_{21} + w_{312}a_{22})\\ \frac{\partial}{\partial{w_{312}}}(w_{311}a_{21} + w_{312}a_{22})\end{bmatrix}\]
+\[\overline{\bm{w}_3} = \overline{l_3} \begin{bmatrix}a_{21}\\ a_{22}\end{bmatrix}\]
+\begin{equation}\overline{\bm{w}_3} = \overline{l_3} \bm{a}_2 \hspace*{0.125cm} (\text{2,1 vector})\end{equation}
+\[\overline{\bm{a}_2} = \overline{l_3} \frac{\partial}{\partial{\bm{a}_2}} l_3\]
+\[\overline{\bm{a}_2} = \overline{l_3} \frac{\partial}{\partial{\bm{a}_2}} \bm{w}_3 \cdot \bm{a}_2\]
+\[\overline{\bm{a}_2} = \overline{l_3} \begin{bmatrix}\frac{\partial{}}{\partial{a_{21}}} (w_{311}a_{21} + w_{312}a_{22})\\ \frac{\partial}{\partial{a_{22}}}(w_{311}a_{21} + w_{312}a_{22})\end{bmatrix}\]
+\[\overline{\bm{a}_2} = \overline{l_3} \begin{bmatrix}w_{311} \\ w_{312}\end{bmatrix}\]
+\begin{equation}\overline{\bm{a}_2} = \overline{l_3} \bm{w}_3^T \hspace*{0.125cm} (\text{2,1 vector})\end{equation}
+\[\overline{\bm{l}_2} = \overline{\bm{a}_2} \frac{\partial}{\partial{\bm{l}_2}} \bm{a}_2\]
+\[\overline{\bm{l}_2} = \overline{\bm{a}_2} \frac{\partial}{\partial{\bm{l}_2}} \text{ReLU}(\bm{l}_2)\]
+\[\overline{\bm{l}_2} = \overline{\bm{a}_2} \theta(\bm{l}_2) \cdot 1\]
+\begin{equation}\overline{\bm{l}_2} = \overline{\bm{a}_2} \theta(\bm{l}_2)  \end{equation}
 \[\overline{\bm{W}_2} = \overline{\bm{l}_2} \frac{\partial}{\partial{\bm{W}_2}} \bm{l}_2\]
+\[\overline{\bm{W}_2} = \overline{\bm{l}_2} \frac{\partial}{\partial{\bm{W}_2}} \begin{bmatrix} l_{21} \\ l_{22} \end{bmatrix}\]
+\[\overline{\bm{W}_2} = \overline{\bm{l}_2} \frac{\partial}{\partial{\bm{W}_2}} \begin{bmatrix} w_{211}a_{11} + w_{212}a_{12} \\ w_{221}a_{11} + w_{222}a_{12} \end{bmatrix}\]
 % \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
 % \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
 % \[\overline{\bm{}_} = \overline{\bm{}_} \frac{\partial}{\partial{\bm{}_}} \bm{}_\]
@@ -348,6 +350,13 @@ conventions here unclear and confusing. The current approach is vague and imprec
     \item what is the derivative of an $n \times m$ vector/matrix with respect to another matrix of the same dimension? 
     ChatGPT: in general, the derivative of one vector w.r.t. another is called the Jacobian.
     The generalized answer for derivative of a matrix w.r.t another is still unanswered.
+\end{itemize}
+\subsubsection{2023-10-24 Remaining questions}
+\begin{itemize}
+    \item the 'type' of the LHS in these backprop calculations is not clearly stated. Quite irritating.
+    \item is the vectorized solution really even necessary? It's quite confusing and unclear to work with algebraically. 
+    Example: what is the type of $\overline{\bm{l}_2}$? It seems like it's the product of two identically-sized (2,1) vectors? How is that even defined? I am confused. The per-element approach seems easier to program into code.
+    \item I think the vectorized approach might just be overkill. I will read \url{https://brilliant.org/wiki/backpropagation/} and think more about this.
 \end{itemize}
 
 \end{document}
