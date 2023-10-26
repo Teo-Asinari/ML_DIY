@@ -303,10 +303,33 @@ multiplications and matrix transpose. I am somewhat confused/overwhelmed by this
 \[\overline{\bm{a}_2} = \overline{l_3} \begin{bmatrix}\frac{\partial{}}{\partial{a_{21}}} (w_{311}a_{21} + w_{312}a_{22})\\ \frac{\partial}{\partial{a_{22}}}(w_{311}a_{21} + w_{312}a_{22})\end{bmatrix}\]
 \[\overline{\bm{a}_2} = \overline{l_3} \begin{bmatrix}w_{311} \\ w_{312}\end{bmatrix}\]
 \begin{equation}\overline{\bm{a}_2} = \overline{l_3} \bm{w}_3^T \hspace*{0.125cm} (\text{2,1 vector})\end{equation}
-\[\overline{\bm{l}_2} = \overline{\bm{a}_2} \frac{\partial}{\partial{\bm{l}_2}} \bm{a}_2\]
-\[\overline{\bm{l}_2} = \overline{\bm{a}_2} \frac{\partial}{\partial{\bm{l}_2}} \text{ReLU}(\bm{l}_2)\]
-\[\overline{\bm{l}_2} = \overline{\bm{a}_2} \theta(\bm{l}_2) \cdot 1\]
-\begin{equation}\overline{\bm{l}_2} = \overline{\bm{a}_2} \theta(\bm{l}_2)  \end{equation}
+\begin{equation}\overline{\bm{l}_2} = \begin{bmatrix}
+   \overline{a_{21}} \theta(l_{21}) \\ \overline{a_{22}} \theta(l_{22})
+\end{bmatrix}\end{equation}
+\begin{equation}
+    \overline{\bm{W}_{2}} = \begin{bmatrix}
+        \overline{l_{21}}a_{11} && \overline{l_{21}}a_{12}\\
+        \overline{l_{22}}a_{11} && \overline{l_{22}}a_{12}\\
+    \end{bmatrix}
+\end{equation}
+\begin{equation}
+    \overline{\bm{a}_{1}} = \begin{bmatrix}
+       \overline{l_{21}} W_{211} + \overline{l_{22}}W_{221} \\ 
+       \overline{l_{21}} W_{212} + \overline{l_{22}}W_{222} \\ 
+    \end{bmatrix} 
+\end{equation}
+\begin{equation}
+    \overline{\bm{l}_{1}} = \begin{bmatrix}
+        \overline{a_{11}} \theta(l_{11}) \\
+        \overline{a_{12}} \theta(l_{12}) \\
+    \end{bmatrix}
+\end{equation}
+\begin{equation}
+    \overline{\bm{W}_1} = \begin{bmatrix}
+        \overline{l_{11}}x_{11} && \overline{l_{11}} x_{12} \\
+        \overline{l_{12}}x_{11} && \overline{l_{12}} x_{12} \\
+    \end{bmatrix}
+\end{equation}
 % \[\overline{\bm{W}_2} = \overline{\bm{l}_2} \frac{\partial}{\partial{\bm{W}_2}} \bm{l}_2\]
 % \[\overline{\bm{W}_2} = \overline{\bm{l}_2} \frac{\partial}{\partial{\bm{W}_2}} \begin{bmatrix} l_{21} \\ l_{22} \end{bmatrix}\]
 % \[\overline{\bm{W}_2} = \overline{\bm{l}_2} \frac{\partial}{\partial{\bm{W}_2}} \begin{bmatrix} w_{211}a_{11} + w_{212}a_{12} \\ w_{221}a_{11} + w_{222}a_{12} \end{bmatrix}\]
