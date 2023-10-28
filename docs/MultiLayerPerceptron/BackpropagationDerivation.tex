@@ -409,5 +409,14 @@ conventions here unclear and confusing. The current approach is vague and imprec
     the same matrix? That might have caused issues in the backprop calculation
 
 \end{itemize}
+\subsubsection{2023-10-28 Observations}
+\begin{itemize}
+    \item So, in order to computate the full backprop, I not only need to store extra numpy arrays 
+    for the updates themselves (to accelerate the update operation), but I need to also store every activation (and post-activation) as they're
+    needed for computing the values of the updates.
+    \item I modified the code to use a tuple of two numpy ndarrays (one for the weights, the other for the updates)
+    and I suspect I will need to add yet another two for activations and post-activation.
+    \item Then, I will be storing the complete 'state' of the network.
+\end{itemize}
 
 \end{document}

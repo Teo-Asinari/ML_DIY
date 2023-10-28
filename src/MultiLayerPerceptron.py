@@ -17,12 +17,14 @@ class MLP:
         self.layers = self.initLayers()
 
     def initLayers(self) -> List[np.ndarray]:
-        layers = [np.random.rand(self.layer_schemas[0][1], self.input_size)]
+        layers = [(np.random.rand(self.layer_schemas[0][1], self.input_size),
+                   np.random.rand(self.layer_schemas[0][1], self.input_size))]
 
         prev_layer_size = self.layer_schemas[0][1]
 
         for layer in self.layer_schemas[1:]:
-            layers.append(np.random.rand(layer[1], prev_layer_size))
+            layers.append((np.random.rand(layer[1], prev_layer_size),
+                           np.random.rand(layer[1], prev_layer_size)))
             prev_layer_size = layer[1]
 
         printd("These are the layers: " + str(layers), DEBUG)
@@ -39,6 +41,22 @@ class MLP:
             printd("curr_val after activation func is: " + str(currVal), DEBUG)
         printd("Final curr_val is: " + str(currVal), DEBUG)
         return currVal
+
+# Hard-code the backprop matrices (derived by hand) for a small MLP of known layout
+class BasicMLP(MLP):
+    def __init__(self):
+        self.input_size = 2
+        self.layer_schemas = [(ActivationFunction.RELU, 2), (ActivationFunction.RELU, 2),
+                    (ActivationFunction.SIGMOID, 1)]
+        self.layers = self.initLayers()
+
+    def backPropSingleError(self, datum):
+       input = datum[0]
+       expected = datum[1]
+       actual = self.forwardPass(input)
+
+
+
 
 
 if __name__ == '__main__':
