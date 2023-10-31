@@ -1,4 +1,6 @@
 import argparse
+import math
+
 import numpy as np
 
 from Utils.DebugUtils import printd
@@ -18,13 +20,13 @@ class MLP:
 
     def initLayers(self) -> List[np.ndarray]:
         layers = [(np.random.rand(self.layer_schemas[0][1], self.input_size),
-                   np.random.rand(self.layer_schemas[0][1], self.input_size))]
+                   np.random.rand(self.layer_schemas[0][1], self.input_size), 0, 0)]
 
         prev_layer_size = self.layer_schemas[0][1]
 
         for layer in self.layer_schemas[1:]:
             layers.append((np.random.rand(layer[1], prev_layer_size),
-                           np.random.rand(layer[1], prev_layer_size)))
+                           np.random.rand(layer[1], prev_layer_size), 0, 0))
             prev_layer_size = layer[1]
 
         printd("These are the layers: " + str(layers), DEBUG)
@@ -54,7 +56,7 @@ class BasicMLP(MLP):
        input = datum[0]
        expected = datum[1]
        actual = self.forwardPass(input)
-
+       error = 0.5 * math.exp((expected - actual), 2)
 
 
 

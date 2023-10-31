@@ -295,22 +295,45 @@ multiplications and matrix transpose. I am somewhat confused/overwhelmed by this
 \begin{equation}\overline{l_3} = \overline{a_3} \times \sigma ' (l_3) \hspace*{0.125cm} (\text{scalar})\end{equation}
 \[\overline{\bm{w}_3} = \overline{l_3} \frac{\partial}{\partial{\bm{w}_3}} l_3\]
 \[\overline{\bm{w}_3} = \overline{l_3} \frac{\partial}{\partial{\bm{w}_3}} \bm{w}_3 \cdot \bm{a}_2\]
-\[\overline{\bm{w}_3} = \overline{l_3} \begin{bmatrix}\frac{\partial{}}{\partial{w_{311}}} (w_{311}a_{21} + w_{312}a_{22})\\ \frac{\partial}{\partial{w_{312}}}(w_{311}a_{21} + w_{312}a_{22})\end{bmatrix}\]
-\[\overline{\bm{w}_3} = \overline{l_3} \begin{bmatrix}a_{21}\\ a_{22}\end{bmatrix}\]
-\begin{equation}\overline{\bm{w}_3} = \overline{l_3} \bm{a}_2 \hspace*{0.125cm} (\text{2,1 vector})\end{equation}
+\[\overline{\bm{w}_3} = \overline{l_3} \begin{bmatrix}\frac{\partial{}}{\partial{w_{311}}} (w_{311}a_{21} + w_{312}a_{22}) && \frac{\partial}{\partial{w_{312}}}(w_{311}a_{21} + w_{312}a_{22})\end{bmatrix}\]
+\[\overline{\bm{w}_3} = \overline{l_3} \begin{bmatrix}a_{21} && a_{22}\end{bmatrix}\]
+\begin{equation}\overline{\bm{w}_3} = \overline{l_3} \bm{a}_2^T \hspace*{0.125cm} (\text{1,2 vector})\end{equation}
 \[\overline{\bm{a}_2} = \overline{l_3} \frac{\partial}{\partial{\bm{a}_2}} l_3\]
 \[\overline{\bm{a}_2} = \overline{l_3} \frac{\partial}{\partial{\bm{a}_2}} \bm{w}_3 \cdot \bm{a}_2\]
 \[\overline{\bm{a}_2} = \overline{l_3} \begin{bmatrix}\frac{\partial{}}{\partial{a_{21}}} (w_{311}a_{21} + w_{312}a_{22})\\ \frac{\partial}{\partial{a_{22}}}(w_{311}a_{21} + w_{312}a_{22})\end{bmatrix}\]
 \[\overline{\bm{a}_2} = \overline{l_3} \begin{bmatrix}w_{311} \\ w_{312}\end{bmatrix}\]
 \begin{equation}\overline{\bm{a}_2} = \overline{l_3} \bm{w}_3^T \hspace*{0.125cm} (\text{2,1 vector})\end{equation}
-\begin{equation}\overline{\bm{l}_2} = \begin{bmatrix}
+\[\overline{\bm{l}_2} = \begin{bmatrix}
    \overline{a_{21}} \theta(l_{21}) \\ \overline{a_{22}} \theta(l_{22})
-\end{bmatrix}\end{equation}
+\end{bmatrix}\]
 \begin{equation}
+  \overline{\bm{l}_2} = \overline{\bm{a}_2} \circ \theta(\bm{l}_2) \hspace*{0.125cm}(\circ \text{ is the hadamard/element-wise product})
+\end{equation}
+\[
     \overline{\bm{W}_{2}} = \begin{bmatrix}
         \overline{l_{21}}a_{11} && \overline{l_{21}}a_{12}\\
         \overline{l_{22}}a_{11} && \overline{l_{22}}a_{12}\\
     \end{bmatrix}
+\]
+\[
+    \overline{\bm{W}_{2}} = \begin{bmatrix}
+        \overline{l_{21}} && \overline{l_{21}}\\
+        \overline{l_{22}} && \overline{l_{22}}\\
+    \end{bmatrix} \circ 
+    \begin{bmatrix}
+        a_{11} && a_{12}\\
+        a_{11} && a_{12}\\
+    \end{bmatrix}
+\]
+\begin{equation}
+    \text{or, more importantly   }
+    \overline{\bm{W}_{2}} = \begin{bmatrix}
+        \overline{l_{21}} \\ \overline{l_{21}}
+    \end{bmatrix} \times
+    \begin{bmatrix}
+        a_{11} && a_{12}\\
+    \end{bmatrix}
+    = \overline{\bm{l_{2}}} \times \bm{a_{1}}^T
 \end{equation}
 \begin{equation}
     \overline{\bm{a}_{1}} = \begin{bmatrix}

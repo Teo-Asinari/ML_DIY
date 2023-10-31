@@ -1,8 +1,8 @@
 # Fdb version 4
-["pdflatex"] 1698526038 "//wsl.localhost/Ubuntu/home/tasinari/my_repos/Teo_Asinari_ML_DIY/docs/MultiLayerPerceptron/BackpropagationDerivation.tex" "BackpropagationDerivation.pdf" "BackpropagationDerivation" 1698526039 0
-  "//wsl.localhost/Ubuntu/home/tasinari/my_repos/Teo_Asinari_ML_DIY/docs/MultiLayerPerceptron/BackpropagationDerivation.tex" 1698526012 22682 5d54b5c93f5eacf30313890b33687a92 ""
-  "BackpropagationDerivation.aux" 1698526039 4152 1437aa05806526b9126cd720135ee78c "pdflatex"
-  "BackpropagationDerivation.tex" 1698526012 22682 5d54b5c93f5eacf30313890b33687a92 ""
+["pdflatex"] 1698774560 "//wsl.localhost/Ubuntu/home/tasinari/my_repos/Teo_Asinari_ML_DIY/docs/MultiLayerPerceptron/BackpropagationDerivation.tex" "BackpropagationDerivation.pdf" "BackpropagationDerivation" 1698774561 0
+  "//wsl.localhost/Ubuntu/home/tasinari/my_repos/Teo_Asinari_ML_DIY/docs/MultiLayerPerceptron/BackpropagationDerivation.tex" 1698774558 23435 fcaeec8257f39542eee2f06902d2403a ""
+  "BackpropagationDerivation.aux" 1698774560 4152 1437aa05806526b9126cd720135ee78c "pdflatex"
+  "BackpropagationDerivation.tex" 1698774558 23435 fcaeec8257f39542eee2f06902d2403a ""
   "C:/Users/Teo Asinari/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1697558034 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/Teo Asinari/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1697736934 11548 42655878db8679c57cf4f548328e5243 ""
   "C:/Users/Teo Asinari/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1697558209 24144777 c79ca9acef9bd9dacefc700ecc33254d ""
