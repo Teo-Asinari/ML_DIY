@@ -17,16 +17,23 @@ class MLP:
         self.input_size = input_size
         self.layer_schemas = layer_schemas
         self.layers = self.initLayers()
+        self.learning_rate = 0.1
 
+    # Design: Each Layer is a list of [weights matrix, deriv w.r.t. loss matrix,
+    # last activation, activation_func(last activation)]
     def initLayers(self) -> List[np.ndarray]:
-        layers = [(np.random.rand(self.layer_schemas[0][1], self.input_size),
-                   np.random.rand(self.layer_schemas[0][1], self.input_size), 0, 0)]
+        layers = [[np.random.rand(self.layer_schemas[0][1], self.input_size),
+                   np.random.rand(self.layer_schemas[0][1], self.input_size),
+                   np.zeros(self.layer_schemas[0][1], 1),
+                   np.zeros(self.layer_schemas[0][1], 1)]]
 
         prev_layer_size = self.layer_schemas[0][1]
 
         for layer in self.layer_schemas[1:]:
-            layers.append((np.random.rand(layer[1], prev_layer_size),
-                           np.random.rand(layer[1], prev_layer_size), 0, 0))
+            layers.append([np.random.rand(layer[1], prev_layer_size),
+                           np.random.rand(layer[1], prev_layer_size),
+                           0 if layer[1] == 1 else np.zeros(layer[1], 1),
+                           0 if layer[1] == 1 else np.zeros(layer[1], 1)])
             prev_layer_size = layer[1]
 
         printd("These are the layers: " + str(layers), DEBUG)
@@ -37,9 +44,11 @@ class MLP:
         printd("curr_val start is: " + str(currVal), DEBUG)
         for layerIdx in range(len(self.layers)):
             currActivationFunc = self.layer_schemas[layerIdx][0]
-            currActivation = np.dot(self.layers[layerIdx], currVal)
+            currActivation = np.dot(self.layers[layerIdx][0], currVal)
+            self.layers[layerIdx][2] = currActivation
             printd("curr_val before activation func is: " + str(currActivation), DEBUG)
             currVal = currActivationFunc(currActivation)
+            self.layers[layerIdx][3] = currVal
             printd("curr_val after activation func is: " + str(currVal), DEBUG)
         printd("Final curr_val is: " + str(currVal), DEBUG)
         return currVal
@@ -56,7 +65,16 @@ class BasicMLP(MLP):
        input = datum[0]
        expected = datum[1]
        actual = self.forwardPass(input)
-       error = 0.5 * math.exp((expected - actual), 2)
+       error = 0.5 * math.pow((expected - actual), 2)
+
+       dError = 1
+       dOutput3 = (expected - actual)
+       dLayer3 = dOutput3 * ActivationFunction.SIGMOID_DERIV(self.layers[2][2])
+       dW3 = dLayer3 * np.transpose(self.layers[1][3])
+       dOutput2 = dLayer3 * np.transpose(self.layers[2][0])
+       dLayer2 = dOutput2 * ActivationFunction.RELU_DERIV(self.layers[0][0])
+       dW2 = np.mdLayer2
+
 
 
 
