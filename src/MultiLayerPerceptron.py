@@ -19,22 +19,20 @@ class MLP:
         self.layers = self.initLayers()
         self.learning_rate = 0.1
 
-    # Design: Each Layer is a list of [weights matrix, deriv w.r.t. loss matrix,
+    # Design: Each Layer is a list of [weights matrix,
     # last activation, activation_func(last activation)]
     def initLayers(self) -> List[np.ndarray]:
         layers = [[np.random.rand(self.layer_schemas[0][1], self.input_size),
-                   np.random.rand(self.layer_schemas[0][1], self.input_size),
-                   np.zeros(self.layer_schemas[0][1], 1),
-                   np.zeros(self.layer_schemas[0][1], 1)]]
+                   0 if self.layer_schemas[0][1] == 1 else np.zeros(self.layer_schemas[0][1], 1),
+                   0 if self.layer_schemas[0][1] == 1 else np.zeros(self.layer_schemas[0][1], 1)]]
 
         prev_layer_size = self.layer_schemas[0][1]
 
-        for layer in self.layer_schemas[1:]:
-            layers.append([np.random.rand(layer[1], prev_layer_size),
-                           np.random.rand(layer[1], prev_layer_size),
-                           0 if layer[1] == 1 else np.zeros(layer[1], 1),
-                           0 if layer[1] == 1 else np.zeros(layer[1], 1)])
-            prev_layer_size = layer[1]
+        for layerSchema in self.layer_schemas[1:]:
+            layers.append([np.random.rand(layerSchema[1], prev_layer_size),
+                           0 if layerSchema[1] == 1 else np.zeros(layerSchema[1], 1),
+                           0 if layerSchema[1] == 1 else np.zeros(layerSchema[1], 1)])
+            prev_layer_size = layerSchema[1]
 
         printd("These are the layers: " + str(layers), DEBUG)
         return layers
@@ -69,13 +67,18 @@ class BasicMLP(MLP):
 
        dError = 1
        dOutput3 = (expected - actual)
-       dLayer3 = dOutput3 * ActivationFunction.SIGMOID_DERIV(self.layers[2][2])
+       dLayer3 = dOutput3 * ActivationFunction.SIGMOID_DERIV(self.layers[2][1])
        dW3 = dLayer3 * np.transpose(self.layers[1][3])
        dOutput2 = dLayer3 * np.transpose(self.layers[2][0])
-       dLayer2 = dOutput2 * ActivationFunction.RELU_DERIV(self.layers[0][0])
-       dW2 = np.mdLayer2
+       dLayer2 = np.multiply(dOutput2, ActivationFunction.RELU_DERIV(self.layers[1][1])) # hadamard/elementwise product
+       dW2 = np.matmul(dLayer2, np.transpose(self.layers[0][3]))
+       dOutput1 = np.matmul(np.transpose(self.layers[1][0]), dLayer2)
+       dLayer1 = np.multiply(dOutput1, ActivationFunction.RELU_DERIV(self.layers[0][1]))
+       dW1 = np.matmul(dLayer1, np.transpose(input))
 
-
+       self.layers[2][0] -= self.learning_rate * dW3
+       self.layers[1][0] -= self.learning_rate * dW2
+       self.layers[0][0] -= self.learning_rate * dW1
 
 
 
