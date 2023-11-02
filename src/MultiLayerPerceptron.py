@@ -43,10 +43,10 @@ class MLP:
         for layerIdx in range(len(self.layers)):
             currActivationFunc = self.layer_schemas[layerIdx][0]
             currActivation = np.dot(self.layers[layerIdx][0], currVal)
-            self.layers[layerIdx][2] = currActivation
+            self.layers[layerIdx][1] = currActivation
             printd("curr_val before activation func is: " + str(currActivation), DEBUG)
             currVal = currActivationFunc(currActivation)
-            self.layers[layerIdx][3] = currVal
+            self.layers[layerIdx][2] = currVal
             printd("curr_val after activation func is: " + str(currVal), DEBUG)
         printd("Final curr_val is: " + str(currVal), DEBUG)
         return currVal
