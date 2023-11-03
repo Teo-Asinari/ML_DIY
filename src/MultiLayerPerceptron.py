@@ -37,8 +37,7 @@ class ScalarOutMLPLayer(MLPLayer):
         self.output = 0
 
 class MLP:
-    def __init__(self, input_size: int, layers: List[MLPLayer]):
-        self.input_size = input_size
+    def __init__(self, layers: List[MLPLayer]):
         self.layers = layers
         self.learning_rate = 0.1
 
@@ -104,7 +103,6 @@ class BasicMLP(MLP):
        self.layers[0][0] -= self.learning_rate * dW1
 
 
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--debug", action="store_true", help="Enable debug mode")
@@ -128,8 +126,10 @@ if __name__ == '__main__':
                      (np.array([0.3, 0.4]), 0)
                      ]
 
-    layerSchemas = [(ActivationFunction.RELU, 2), (ActivationFunction.RELU, 2),
-                    (ActivationFunction.SIGMOID, 1), (ActivationFunction.ROUND, 1)]
-    basicMLP = MLP(2, layerSchemas)
+    layers = [MatrixOutMLPLayer(2, 2, ActivationFunction.RELU),
+              MatrixOutMLPLayer(2, 2, ActivationFunction.RELU),
+              ScalarOutMLPLayer(1, 2, ActivationFunction.SIGMOID)]
+    basicMLP = MLP(layers)
     for datum in training_data:
         basicMLP.forwardPass(datum[0])
+        basicMLP.backPropSingleError(datum)
