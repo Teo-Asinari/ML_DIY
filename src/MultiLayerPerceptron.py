@@ -11,42 +11,65 @@ from typing import List, Tuple
 layerSchema = Tuple[activationFunc, int]
 
 DEBUG = False
+class MLPLayer:
+    def __init__(self, inputsize: int = 2, size: int = 2, func: activationFunc =
+    ActivationFunction.RELU):
+        self.inputsize = inputsize
+        self.size = size
+        self.func = func
+        self.weights = None
+        self.activation = None
+        self.output = None
+
+class MatrixOutMLPLayer(MLPLayer):
+    def __init__(self, inputsize: int = 2, size: int = 2, func: activationFunc =
+    ActivationFunction.RELU):
+        super.__init__(self, inputsize, size, func)
+        self.weights = np.random.rand(size, inputsize)
+        self.activation = np.zeros(size, 1)
+        self.output = np.zeros(size, 1)
+
+class ScalarOutMLPLayer(MLPLayer):
+    def __init__(self, inputsize : int = 2, size: int = 2, func: activationFunc = ActivationFunction.RELU):
+        super.__init__(self, inputsize, size, func)
+        self.weights = np.random.rand(size, inputsize)
+        self.activation = 0
+        self.output = 0
 
 class MLP:
-    def __init__(self, input_size: int, layer_schemas: List[layerSchema]):
+    def __init__(self, input_size: int, layers: List[MLPLayer]):
         self.input_size = input_size
-        self.layer_schemas = layer_schemas
-        self.layers = self.initLayers()
+        self.layers = layers
         self.learning_rate = 0.1
 
-    # Design: Each Layer is a list of [weights matrix,
-    # last activation, activation_func(last activation)]
-    def initLayers(self) -> List[np.ndarray]:
-        layers = [[np.random.rand(self.layer_schemas[0][1], self.input_size),
-                   0 if self.layer_schemas[0][1] == 1 else np.zeros(self.layer_schemas[0][1], 1),
-                   0 if self.layer_schemas[0][1] == 1 else np.zeros(self.layer_schemas[0][1], 1)]]
+    # # Design: Each Layer is a list of [weights matrix,
+    # # last activation, activation_func(last activation)]
+    # def initLayers(self) -> List[np.ndarray]:
+    #     layers = [[np.random.rand(self.layer_schemas[0][1], self.input_size),
+    #                0 if self.layer_schemas[0][1] == 1 else np.zeros(self.layer_schemas[0][1], 1),
+    #                0 if self.layer_schemas[0][1] == 1 else np.zeros(self.layer_schemas[0][1], 1)]]
+    #
+    #     prev_layer_size = self.layer_schemas[0][1]
+    #
+    #     for layerSchema in self.layer_schemas[1:]:
+    #         layers.append([np.random.rand(layerSchema[1], prev_layer_size),
+    #                        0 if layerSchema[1] == 1 else np.zeros(layerSchema[1], 1),
+    #                        0 if layerSchema[1] == 1 else np.zeros(layerSchema[1], 1)])
+    #         prev_layer_size = layerSchema[1]
+    #
+    #     printd("These are the layers: " + str(layers), DEBUG)
+    #     return layers
 
-        prev_layer_size = self.layer_schemas[0][1]
-
-        for layerSchema in self.layer_schemas[1:]:
-            layers.append([np.random.rand(layerSchema[1], prev_layer_size),
-                           0 if layerSchema[1] == 1 else np.zeros(layerSchema[1], 1),
-                           0 if layerSchema[1] == 1 else np.zeros(layerSchema[1], 1)])
-            prev_layer_size = layerSchema[1]
-
-        printd("These are the layers: " + str(layers), DEBUG)
-        return layers
-
-    def forwardPass(self, input_vec: np.ndarray) -> np.ndarray:
+    def forwardPass(self, input_vec: np.ndarray):
         currVal = input_vec
         printd("curr_val start is: " + str(currVal), DEBUG)
-        for layerIdx in range(len(self.layers)):
-            currActivationFunc = self.layer_schemas[layerIdx][0]
-            currActivation = np.dot(self.layers[layerIdx][0], currVal)
-            self.layers[layerIdx][1] = currActivation
+        for layer in self.layers:
+            currActivationFunc = layer.func
+            currActivation = np.dot(layer.weights, currVal)
+            layer.activation = currActivation
             printd("curr_val before activation func is: " + str(currActivation), DEBUG)
             currVal = currActivationFunc(currActivation)
-            self.layers[layerIdx][2] = currVal
+            layer.output = currVal
             printd("curr_val after activation func is: " + str(currVal), DEBUG)
         printd("Final curr_val is: " + str(currVal), DEBUG)
         return currVal
@@ -67,13 +90,13 @@ class BasicMLP(MLP):
 
        dError = 1
        dOutput3 = (expected - actual)
-       dLayer3 = dOutput3 * ActivationFunction.SIGMOID_DERIV(self.layers[2][1])
-       dW3 = dLayer3 * np.transpose(self.layers[1][3])
-       dOutput2 = dLayer3 * np.transpose(self.layers[2][0])
-       dLayer2 = np.multiply(dOutput2, ActivationFunction.RELU_DERIV(self.layers[1][1])) # hadamard/elementwise product
-       dW2 = np.matmul(dLayer2, np.transpose(self.layers[0][3]))
-       dOutput1 = np.matmul(np.transpose(self.layers[1][0]), dLayer2)
-       dLayer1 = np.multiply(dOutput1, ActivationFunction.RELU_DERIV(self.layers[0][1]))
+       dLayer3 = dOutput3 * ActivationFunction.SIGMOID_DERIV(self.layers[2].activation)
+       dW3 = dLayer3 * self.layers[1].output
+       dOutput2 = dLayer3 * self.layers[2].weights
+       dLayer2 = np.multiply(dOutput2, ActivationFunction.RELU_DERIV(self.layers[1].activation)) # hadamard/elementwise product
+       dW2 = np.matmul(dLayer2, np.transpose(self.layers[0].output))
+       dOutput1 = np.matmul(np.transpose(self.layers[1].weights), dLayer2)
+       dLayer1 = np.multiply(dOutput1, ActivationFunction.RELU_DERIV(self.layers[0].activation))
        dW1 = np.matmul(dLayer1, np.transpose(input))
 
        self.layers[2][0] -= self.learning_rate * dW3
