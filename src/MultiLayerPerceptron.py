@@ -31,8 +31,8 @@ class MatrixOutMLPLayer(MLPLayer):
     def __init__(self, inputsize: int = 2, size: int = 2, func: activationFunc =
     ActivationFunction.RELU):
         super(MatrixOutMLPLayer, self).__init__(inputsize, size, func)
-        self.activation = np.zeros((size, 1))
-        self.output = np.zeros((size, 1))
+        self.activation = np.zeros(size)
+        self.output = np.zeros(size)
 
 class ScalarOutMLPLayer(MLPLayer):
     def __init__(self, inputsize : int = 2, size: int = 2, func: activationFunc = ActivationFunction.RELU):
@@ -64,7 +64,7 @@ class BasicMLP(MLP):
     def __init__(self):
         self.layers = [MatrixOutMLPLayer(2, 2, ActivationFunction.RELU),
          MatrixOutMLPLayer(2, 2, ActivationFunction.RELU),
-         ScalarOutMLPLayer(1, 2, ActivationFunction.SIGMOID)]
+         ScalarOutMLPLayer(2, 1, ActivationFunction.SIGMOID)]
         self.learning_rate = 0.1
 
     def backPropSingleError(self, datum):
@@ -101,6 +101,16 @@ if __name__ == '__main__':
 
     printd("Begin construct basic MLP", DEBUG)
 
+    # # Simple binary classifier for oranges and apples
+    # training_data = [(np.array([[0.7], [0.8]]), 1),
+    #                  (np.array([[0.2], [0.5]]), 0),
+    #                  (np.array([[0.9], [0.7]]), 1),
+    #                  (np.array([[0.4], [0.3]]), 0),
+    #                  (np.array([[0.6], [0.6]]), 1),
+    #                  (np.array([[0.3], [0.4]]), 0)
+    #                  ]
+
+
     # Simple binary classifier for oranges and apples
     training_data = [(np.array([0.7, 0.8]), 1),
                      (np.array([0.2, 0.5]), 0),
@@ -110,10 +120,7 @@ if __name__ == '__main__':
                      (np.array([0.3, 0.4]), 0)
                      ]
 
-    layers = [MatrixOutMLPLayer(2, 2, ActivationFunction.RELU),
-              MatrixOutMLPLayer(2, 2, ActivationFunction.RELU),
-              ScalarOutMLPLayer(1, 2, ActivationFunction.SIGMOID)]
-    basicMLP = MLP(layers)
+    basicMLP = BasicMLP()
     for datum in training_data:
         basicMLP.forwardPass(datum[0])
         basicMLP.backPropSingleError(datum)
