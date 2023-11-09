@@ -16,8 +16,8 @@ class MLPLayer:
         self.size = size
         self.func = func
         self.weights = np.random.rand(size, inputsize)
-        self.activation = np.zeros(size)
-        self.output = np.zeros(size)
+        self.activation = np.zeros((size, 1))
+        self.output = np.zeros((size,1))
 
     def __repr__(self):
         return f"MLPLayer(inputsize={self.inputsize}, " \
@@ -35,16 +35,12 @@ class MLP:
 
     def forwardPass(self, input_vec: np.ndarray):
         currVal = input_vec
-        printd("curr_val start is: " + str(currVal), DEBUG)
         for layer in self.layers:
             currActivationFunc = layer.func
             currActivation = np.dot(layer.weights, currVal)
             layer.activation = currActivation
-            printd("curr_val before activation func is: " + str(currActivation), DEBUG)
             currVal = currActivationFunc(currActivation)
             layer.output = currVal
-            printd("curr_val after activation func is: " + str(currVal), DEBUG)
-        printd("Final curr_val is: " + str(currVal), DEBUG)
         return currVal
 
 # Hard-code the backprop matrices (derived by hand) for a small MLP of known layout
@@ -59,12 +55,9 @@ class BasicMLP(MLP):
        input = datum[0]
        expected = datum[1]
        actual = self.forwardPass(input)
-       error = 0.5 * pow(expected - actual, 2)
-
-       printd("Starting backprop. Error is " + str(error), DEBUG)
 
        dError = 1
-       dOutput2 = (expected - actual)
+       dOutput2 = expected - actual
        dLayer2 = dOutput2 * ActivationFunction.SIGMOID_DERIV(self.layers[2].activation)
        dW2 = dLayer2 * np.transpose(self.layers[1].output)
        dOutput1 = dLayer2 * np.transpose(self.layers[2].weights)
@@ -78,6 +71,14 @@ class BasicMLP(MLP):
        self.layers[1].weights -= self.learning_rate * dW1
        self.layers[0].weights -= self.learning_rate * dW0
 
+    def getMSEForDataSet(self, dataSet):
+        squaredError = 0
+        for datum in dataSet:
+            actual = self.forwardPass(datum[0])
+            expected = datum[1]
+            squaredError += pow(expected - actual, 2)
+        mse = squaredError / len(dataSet)
+        print("MSE is: " + str(mse))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -90,16 +91,18 @@ if __name__ == '__main__':
     printd("Begin construct basic MLP", DEBUG)
 
     # Simple binary classifier for oranges and apples
-    training_data = [(np.array([0.7, 0.8]), 1),
-                     (np.array([0.2, 0.5]), 0),
-                     (np.array([0.9, 0.7]), 1),
-                     (np.array([0.4, 0.3]), 0),
-                     (np.array([0.6, 0.6]), 1),
-                     (np.array([0.3, 0.4]), 0)
+    training_data = [(np.array([[0.7], [0.8]]), 1),
+                     (np.array([[0.2], [0.5]]), 0),
+                     (np.array([[0.9], [0.7]]), 1),
+                     (np.array([[0.4], [0.3]]), 0),
+                     (np.array([[0.6], [0.6]]), 1),
+                     (np.array([[0.3], [0.4]]), 0)
                      ]
 
     basicMLP = BasicMLP()
+
+    basicMLP.getMSEForDataSet(training_data)
     for datum in training_data:
-        basicMLP.forwardPass(datum[0])
         basicMLP.backPropSingleError(datum)
 
+    basicMLP.getMSEForDataSet(training_data)
