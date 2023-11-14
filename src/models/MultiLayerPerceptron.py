@@ -2,8 +2,8 @@ import argparse
 
 import numpy as np
 
-from Utils.DebugUtils import printd
-from Utils.ActivationFunction import activationFunc, ActivationFunction
+from ..utils.DebugUtils import printd
+from ..utils.ActivationFunction import activationFunc, ActivationFunction
 
 from typing import List
 
@@ -80,6 +80,12 @@ class BasicMLP(MLP):
         mse = squaredError / len(dataSet)
         print("MSE is: " + str(mse))
 
+    def trainingRun(self, training_data):
+        self.getMSEForDataSet(training_data)
+        for datum in training_data:
+            self.backPropSingleError(datum)
+        self.getMSEForDataSet(training_data)
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--debug", action="store_true", help="Enable debug mode")
@@ -101,8 +107,4 @@ if __name__ == '__main__':
 
     basicMLP = BasicMLP()
 
-    basicMLP.getMSEForDataSet(training_data)
-    for datum in training_data:
-        basicMLP.backPropSingleError(datum)
-
-    basicMLP.getMSEForDataSet(training_data)
+    basicMLP.trainingRun(training_data)
