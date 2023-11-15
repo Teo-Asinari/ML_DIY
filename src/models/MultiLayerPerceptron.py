@@ -71,6 +71,13 @@ class BasicMLP(MLP):
        self.layers[1].weights -= self.learning_rate * dW1
        self.layers[0].weights -= self.learning_rate * dW0
 
+       print("Backprop single error. Expected: " + str(expected) +
+              ", Actual: " + str(actual)
+              + ", dOutput2: "  + str(dOutput2)
+              + ", dW2: " + str(dW2)
+              + ", dW1: " + str(dW1)
+              + ", dW0: " + str(dW0))
+
     def getMSEForDataSet(self, dataSet):
         squaredError = 0
         for datum in dataSet:
