@@ -11,11 +11,11 @@ from typing import List
 DEBUG = False
 class MLPLayer:
     def __init__(self, inputsize: int = 2, size: int = 2, func: activationFunc =
-    ActivationFunction.RELU):
+    ActivationFunction.RELU, downFactor = 2):
         self.inputsize = inputsize
         self.size = size
         self.func = func
-        self.weights = np.random.rand(size, inputsize)
+        self.weights = np.random.rand(size, inputsize) * 10 ** -downFactor
         self.activation = np.zeros((size, 1))
         self.output = np.zeros((size,1))
 
@@ -49,7 +49,7 @@ class BasicMLP(MLP):
         self.layers = [MLPLayer(2, 2, ActivationFunction.RELU),
          MLPLayer(2, 2, ActivationFunction.RELU),
          MLPLayer(2, 1, ActivationFunction.SIGMOID)]
-        self.learning_rate = 0.1
+        self.learning_rate = 0.45
 
     def backPropSingleError(self, datum):
        input = datum[0]
@@ -67,16 +67,16 @@ class BasicMLP(MLP):
        dLayer0 = np.multiply(dOutput0, ActivationFunction.RELU_DERIV(self.layers[0].activation))
        dW0 = np.matmul(dLayer0, np.transpose(input))
 
-       self.layers[2].weights -= self.learning_rate * dW2
-       self.layers[1].weights -= self.learning_rate * dW1
-       self.layers[0].weights -= self.learning_rate * dW0
+       self.layers[2].weights += self.learning_rate * dW2
+       self.layers[1].weights += self.learning_rate * dW1
+       self.layers[0].weights += self.learning_rate * dW0
 
-       print("Backprop single error. Expected: " + str(expected) +
-              ", Actual: " + str(actual)
-              + ", dOutput2: "  + str(dOutput2)
-              + ", dW2: " + str(dW2)
-              + ", dW1: " + str(dW1)
-              + ", dW0: " + str(dW0))
+       # print("Backprop single error. Expected: " + str(expected) +
+       #        ", Actual: " + str(actual)
+       #        + ", dOutput2: "  + str(dOutput2)
+       #        + ", dW2: " + str(dW2)
+       #        + ", dW1: " + str(dW1)
+       #        + ", dW0: " + str(dW0))
 
     def getMSEForDataSet(self, dataSet):
         squaredError = 0

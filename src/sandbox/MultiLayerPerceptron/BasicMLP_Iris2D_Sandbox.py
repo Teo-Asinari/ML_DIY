@@ -35,4 +35,5 @@ if __name__ == '__main__':
 
     basicMLP = BasicMLP()
 
-    basicMLP.trainingRun(training_data)
+    for i in range(100):
+        basicMLP.trainingRun(training_data)
