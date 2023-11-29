@@ -49,7 +49,8 @@ class BasicMLP(MLP):
         self.layers = [MLPLayer(2, 2, ActivationFunction.RELU),
          MLPLayer(2, 2, ActivationFunction.RELU),
          MLPLayer(2, 1, ActivationFunction.SIGMOID)]
-        self.learning_rate = 0.45
+        # self.learning_rate = 0.45
+        self.learning_rate = 0.1
 
     def backPropSingleError(self, datum):
        input = datum[0]
