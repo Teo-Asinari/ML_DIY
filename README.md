@@ -9,4 +9,4 @@ The full derivation of the backward pass updates is explained in docs/models/Mul
 
 ## How to run
 I ran on Python 3.8.10 on WSL 2.0 (Windows Subsystem For Linux) using Pycharm. Assuming you're in a POSIX terminal with python 3.8.10 or higher, you ought to be able to just run:
-<your_python_executable> <path to BasicMLP_Iris2D_Sandbox.py>
+<your_python_executable> <path to BasicMLP_Iris2D_Sandbox\.py>
