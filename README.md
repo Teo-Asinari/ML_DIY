@@ -3,7 +3,7 @@ A toy implementation of backpropagation on a simple MLP. By Teo Asinari
 
 ## Documentation
 It is a simple MLP with 3 layers. The first two are linear with ReLU activation (2 neurons each) and the last is a single neuron sigmoid layer. 
-It is being trained on a simplified 2-D version of the iris dataset, found here data/iris2d.csv.
+It is being trained on a simplified 2-D version of the iris dataset: data/iris2d.csv.
 
 The full derivation of the backward pass updates is explained in docs/models/MultiLayerPerceptron/BackpropagationDerivation.pdf.
 
