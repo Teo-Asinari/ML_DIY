@@ -8,6 +8,8 @@ import numpy as np
 from src.models.MultiLayerPerceptron import BasicMLP
 from src.utils.DebugUtils import printd
 
+EPOCHS = 500
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--debug", action="store_true", help="Enable debug mode")
@@ -26,14 +28,12 @@ if __name__ == '__main__':
     df['variety'] = df['variety'].map(binary_mapping)
     input_features = df.drop(columns=['variety'])
 
-    # training_data = list(zip(input_features.to_numpy(), df['variety']))
     training_data = list(zip(np.reshape(input_features.to_numpy(), (input_features.shape[0],
                                                                     input_features.shape[1],
                                                                     1)),
                              df['variety']))
-    # training_data = list(zip(input_features.apply(lambda x: x.to_numpy().reshape(-1, 1), axis=0).values, df['variety']))
 
     basicMLP = BasicMLP()
 
-    for i in range(200):
+    for i in range(EPOCHS):
         basicMLP.trainingRun(training_data)
